@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Tabs</title>
+    <title>vPlayer</title>
     <link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://cdn.bootcss.com/vue/1.0.21/vue.min.js"></script>
@@ -13,7 +13,7 @@
 <body>
     <div class="container">
         <audio controls>
-            <source src="http://m2.music.126.net/MvezjSF2vbzSbwmZd6Ss6A==/3306231465780966.mp3" type="audio/mp3">
+            <source src="http://m2.music.126.net/qkkIu30Cg-BUgzDABCfWdg==/6665239489152108.mp3" type="audio/mp3">
         </audio>
         <button class="btn btn-primary" @click="setCurrentTime">当前时间</button>
         <button class="btn btn-success" @click="getStatus">当前状态</button>
@@ -113,11 +113,6 @@ new Vue({
             playList: [],
             mlist: []
         }
-    },
-    computed: {
-        setsrc: function() {
-            return this.audio.src = 'http://m2.music.126.net/MvezjSF2vbzSbwmZd6Ss6A==/3306231465780966.mp3'
-        },
     },
     ready: function() {
         setInterval(this.setProgress, 500);
@@ -233,12 +228,6 @@ new Vue({
             });
         }
     }
-})
-Vue.filter('duration', function(time) {
-    MM = parseInt(time / 60);
-    SS = parseInt(time % 60);
-    var DT = MM + ':' + (SS < 10 ? '0' + SS : SS);
-    return DT;
 })
 </script>
 
