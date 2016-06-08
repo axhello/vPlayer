@@ -49,7 +49,7 @@
         <div class="col-md-6 col-md-offset-3">
             <form action="" @submit.prevent>
                 <div class="input-group">
-                    <input type="text" @change="formSubmit" class="form-control" name="search" placeholder="Search for..." v-model="search">
+                    <input type="text" @keyup.enter="formSubmit" @blur="formSubmit" @change="formSubmit" class="form-control" name="search" placeholder="Search for..." v-model="search">
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="button">Go!</button>
                     </span>
