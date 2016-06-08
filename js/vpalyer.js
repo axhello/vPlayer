@@ -15,7 +15,9 @@ new Vue({
             playList: [],
             mlist: [],
             next: false,
-            p: 1,
+            pagenumber: 1,
+            isnext: false,
+            lock: false,
             pages: 0,
             offset: 30,
         }
@@ -27,33 +29,33 @@ new Vue({
         var isLoop = this.storage.getItem('loop');
         isLoop === 'true' ? this.audio.loop = true : this.audio.loop = false;
         this.mlist = JSON.parse(this.storage.getItem('testObject'));
+        this.autoNextPlay();
     },
     methods: {
-        setCurrentTime: function() {
-            this.audio.currentTime = 15.555;
-        },
-        getDuration: function() {
-            alert(this.audio.duration);
-        },
-        getStatus: function() {
-            alert(this.audio.readyState);
-        },
         setAutoPlay: function() {
             this.autoplay = !this.autoplay;
             alert(this.autoplay);
             this.storage.setItem('autoplay', this.autoplay);
         },
+        rePlayed: function () {
+            this.audio.currentTime = 0;
+        },
         setPlay: function() {
-            this.audio.play()
+            this.audio.play();
         },
         setPause: function() {
-            this.audio.pause()
+            this.audio.pause();
         },
         nextMusic: function() {
-            this.audio.src = 'http://m2.music.126.net/QN7Y3gJPLB6tXlZY7oo3gQ==/1378787588955489.mp3'
+            this.audio.src = 'http://m2.music.126.net/HC_jFzN5KjTRShZ3-vL8HA==/7761452581574887.mp3'
+            this.audio.play();
+        },
+        seMtuted: function() {
+            this.audio.muted = !this.audio.muted;
         },
         setLoop: function() {
             this.loop = !this.loop;
+            alert(this.loop);
             this.storage.setItem('loop', this.loop);
         },
         setVolume: function() {
@@ -80,6 +82,7 @@ new Vue({
                 's': this.search
             }).then(function(data) {
                 this.lists = data.data.result.songs;
+                this.isnext = true;
             }, function(response) {
                 // error callback
             });
@@ -98,31 +101,30 @@ new Vue({
                 this.audio.src = mdata.url;
                 this.audio.play();
                 var obj = JSON.parse(this.storage.getItem('testObject'));
-                if (this.storage.getItem('testObject') == null) {
+                if (this.storage.getItem('testObject') === null) {
                     this.playList.push(mdata);
                     this.storage.setItem('testObject', JSON.stringify(this.playList));
                 } else {
-                    var lock;
-                    for(var i=0; i < obj.length; i++) {
-                        if(mdata.url == obj[i].url){
-                            lock = true;
-                            return false;
+                    for(var i = 0; i < obj.length; i++) {
+                        if(mdata.url === obj[i].url){
+                            this.lock = true;
+                            break;
                         } else {
-                            lock = false;
+                            this.lock = false;
                         }
                     };
-                    if (lock == false) {
+                    if (this.lock == false) {
                         this.playList.push(mdata);
                         this.storage.setItem('testObject', JSON.stringify(this.playList));
                     } else {
-                        alert('已经存在');
+                        alert('歌曲已经存在歌单');
                     };
                 }      
             }, function(response) {
                 // error callback
             });
         },
-        playHistoryList: function (id) {
+        playHistoryList: function(id) {
             this.$http.get('api/detailApi.php', {
                 'id': id
             }).then(function(data) {
@@ -133,30 +135,35 @@ new Vue({
                 // error callback
             });
         },
-        previousPage: function () {
+        previousPage: function() {
             this.pages = this.pages - this.offset;
-            this.p--;
-            this.$http.get('api/pagesApi.php',{
+            this.pagenumber--;
+            this.$http.get('api/pagesApi.php', {
                 's': this.search,
                 'p': this.pages
             }).then(function(data) {
-               this.lists = data.data.result.songs;
+                this.lists = data.data.result.songs;
             }, function(response) {
                 // error callback
             });
         },
-        nextPage: function () {
+        nextPage: function() {
             this.next = true;
-            p = this.p++;
+            p = this.pagenumber++;
             this.pages = p * this.offset;
-            this.$http.get('api/pagesApi.php',{
+            this.$http.get('api/pagesApi.php', {
                 's': this.search,
                 'p': this.pages
             }).then(function(data) {
-               this.lists = data.data.result.songs;
+                this.lists = data.data.result.songs;
             }, function(response) {
                 // error callback
             });
+        },
+        autoNextPlay: function() {
+            this.audio.addEventListener('ended', function() {
+                alert('over');
+            }, true);
         }
     }
 })
