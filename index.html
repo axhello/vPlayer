@@ -65,6 +65,7 @@
                         <th>歌手</th>
                         <th>专辑</th>
                         <th>发布时间</th>
+                        <th>条数</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -74,9 +75,16 @@
                         <td>{{ list.artists[0].name }}{{'/'+list.artists[1].name}}{{ '/'+ list.artists[2].name}}</td>
                         <td>《{{ list.album.name }}》</td>
                         <td>{{ list.duration | duration }}</td>
+                        <td>{{ $index }}</td>
                     </tr>
                 </tbody>
             </table>
+            <div>
+                <ul>
+                    <li v-show="next"><a href="#" @click.pervent="previousPage()">上一页</a></li>
+                    <li v-show="search"><a href="#" @click.pervent="nextPage">下一页</a></li>
+                </ul>
+            </div>
         </div>
         <div class="bs-example" data-example-id="striped-table">
             <table class="table table-striped">

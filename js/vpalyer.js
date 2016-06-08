@@ -13,7 +13,11 @@ new Vue({
             search: '',
             lists: [],
             playList: [],
-            mlist: []
+            mlist: [],
+            next: false,
+            p: 1,
+            pages: 0,
+            offset: 30,
         }
     },
     ready: function() {
@@ -125,6 +129,31 @@ new Vue({
                 var music = data.data.songs[0];
                 this.audio.src = music.mp3Url;
                 this.audio.play();
+            }, function(response) {
+                // error callback
+            });
+        },
+        previousPage: function () {
+            this.pages = this.pages - this.offset;
+            this.p--;
+            this.$http.get('api/pagesApi.php',{
+                's': this.search,
+                'p': this.pages
+            }).then(function(data) {
+               this.lists = data.data.result.songs;
+            }, function(response) {
+                // error callback
+            });
+        },
+        nextPage: function () {
+            this.next = true;
+            p = this.p++;
+            this.pages = p * this.offset;
+            this.$http.get('api/pagesApi.php',{
+                's': this.search,
+                'p': this.pages
+            }).then(function(data) {
+               this.lists = data.data.result.songs;
             }, function(response) {
                 // error callback
             });
