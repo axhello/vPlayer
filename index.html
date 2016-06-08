@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tabs</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/vue/1.0.21/vue.min.js"></script>
+    <script src="http://cdn.bootcss.com/vue-resource/0.7.2/vue-resource.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <audio controls>
+            <source src="http://m2.music.126.net/MvezjSF2vbzSbwmZd6Ss6A==/3306231465780966.mp3" type="audio/mp3">
+        </audio>
+        <button class="btn btn-primary" @click="setCurrentTime">当前时间</button>
+        <button class="btn btn-success" @click="getStatus">当前状态</button>
+        <button class="btn btn-primary" @click="getDuration">歌曲长度</button>
+        <button class="btn btn-success" @click="setPlay">播放</button>
+        <button class="btn btn-danger" @click="setPause">暂停</button>
+        <button class="btn btn-info" @click="setAutoPlay()">自动播放</button>
+        <button class="btn btn-warning" @click="nextMusic">换歌</button>
+        <button class="btn btn-default" @click="setLoop">循环</button>
+        <input v-model="range" @change="setVolume" type="range" min="0" max="1" step=0.1 value="" />
+        <div>{{ range }}</div>
+        <p><span>{{ showCurrentTime }}</span>/<span>{{ showDurationTime }}</span></p>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped active" style="width: {{progress}}%">
+                <span class="sr-only">{{progress}}% Complete</span>
+            </div>
+        </div>
+        <div class="col-md-6 col-md-offset-3">
+            <form action="" @submit.prevent>
+                <div class="input-group">
+                    <input type="text" @change="formSubmit" class="form-control" name="search" placeholder="Search for..." v-model="search">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+        <div class="bs-example" data-example-id="striped-table">
+            <table class="table table-striped">
+                <thead v-if="search">
+                    <tr>
+                        <th>歌曲id</th>
+                        <th>歌曲名</th>
+                        <th>歌手</th>
+                        <th>专辑</th>
+                        <th>发布时间</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="list in lists">
+                        <th scope="row"><span @click="playMusic(list.id)" class="glyphicon glyphicon-headphones"></span></th>
+                        <td>{{ list.name }}</td>
+                        <td>{{ list.artists[0].name }}{{'/'+list.artists[1].name}}{{ '/'+ list.artists[2].name}}</td>
+                        <td>《{{ list.album.name }}》</td>
+                        <td>{{ list.duration | duration }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="bs-example" data-example-id="striped-table">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>歌曲id</th>
+                        <th>歌曲名</th>
+                        <th>歌手</th>
+                        <th>MP3链接</th>
+                    </tr>
+                </thead>
+                <tbody v-if="mlist != ''">
+                    <tr v-for="paly in mlist">
+                        <th scope="row"><span @click="playHistoryList(paly.id)" class="glyphicon glyphicon-headphones"></span></th>
+                        <td>{{ paly.id }}</td>
+                        <td>{{ paly.title }}</td>
+                        <td>{{ paly.artists }}</td>
+                        <td>{{ paly.url }}</td>
+                    </tr>
+                    <br v-else>
+                    <tr v-for="paly in playList">
+                        <th scope="row"><span @click="playHistoryList(paly.id)" class="glyphicon glyphicon-headphones"></span></th>
+                        <td>{{ paly.id }}</td>
+                        <td>{{ paly.title }}</td>
+                        <td>{{ paly.artists }}</td>
+                        <td>{{ paly.url }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+new Vue({
+    el: 'body',
+    data: function() {
+        return {
+            audio: document.getElementsByTagName('audio')[0],
+            storage: window.localStorage,
+            range: 0.5,
+            progress: 0,
+            autoplay: false,
+            loop: false,
+            showCurrentTime: '0:00',
+            showDurationTime: '0:00',
+            search: '',
+            lists: [],
+            playList: [],
+            mlist: []
+        }
+    },
+    computed: {
+        setsrc: function() {
+            return this.audio.src = 'http://m2.music.126.net/MvezjSF2vbzSbwmZd6Ss6A==/3306231465780966.mp3'
+        },
+    },
+    ready: function() {
+        setInterval(this.setProgress, 500);
+        var isAuto = this.storage.getItem('autoplay');
+        isAuto === 'true' ? this.audio.autoplay = true : this.audio.autoplay = false;
+        var isLoop = this.storage.getItem('loop');
+        isLoop === 'true' ? this.audio.loop = true : this.audio.loop = false;
+        this.mlist = JSON.parse(this.storage.getItem('testObject'));
+    },
+    methods: {
+        setCurrentTime: function() {
+            this.audio.currentTime = 15.555;
+        },
+        getDuration: function() {
+            alert(this.audio.duration);
+        },
+        getStatus: function() {
+            alert(this.audio.readyState);
+        },
+        setAutoPlay: function() {
+            this.autoplay = !this.autoplay;
+            alert(this.autoplay);
+            this.storage.setItem('autoplay', this.autoplay);
+        },
+        setPlay: function() {
+            this.audio.play()
+        },
+        setPause: function() {
+            this.audio.pause()
+        },
+        nextMusic: function() {
+            this.audio.src = 'http://m2.music.126.net/QN7Y3gJPLB6tXlZY7oo3gQ==/1378787588955489.mp3'
+        },
+        setLoop: function() {
+            this.loop = !this.loop;
+            this.storage.setItem('loop', this.loop);
+        },
+        setVolume: function() {
+            return this.audio.volume = this.range;
+        },
+        setProgress: function() {
+            var currentTime = this.audio.currentTime;
+            MM = parseInt(currentTime / 60);
+            SS = parseInt(currentTime % 60);
+            var CT = MM + ':' + (SS < 10 ? '0' + SS : SS);
+            this.showCurrentTime = CT;
+
+            var duration = this.audio.duration;
+            MM = parseInt(duration / 60);
+            SS = parseInt(duration % 60);
+            var DT = MM + ':' + (SS < 10 ? '0' + SS : SS);
+            this.showDurationTime = DT;
+
+            var value = currentTime / duration * 100;
+            this.progress = value.toFixed(3);
+        },
+        formSubmit: function() {
+            this.$http.get('/searchApi.php', {
+                's': this.search
+            }).then(function(data) {
+                this.lists = data.data.result.songs;
+            }, function(response) {
+                // error callback
+            });
+        },
+        playMusic: function(id) {
+            this.$http.get('/detailApi.php', {
+                'id': id
+            }).then(function(data) {
+                var result = data.data.songs[0];
+                var mdata = {
+                    'id': result.id,
+                    'title': result.name,
+                    'url':result.mp3Url,
+                    'artists':result.artists[0].name
+                };
+                this.audio.src = mdata.url;
+                this.audio.play();
+                var obj = JSON.parse(this.storage.getItem('testObject'));
+                if (this.storage.getItem('testObject') == null) {
+                    this.playList.push(mdata);
+                    this.storage.setItem('testObject', JSON.stringify(this.playList));
+                } else {
+                    var lock;
+                    for(var i=0; i < obj.length; i++) {
+                        if(mdata.url == obj[i].url){
+                            lock = true;
+                            return false;
+                        } else {
+                            lock = false;
+                        }
+                    };
+                    if (lock == false) {
+                        this.playList.push(mdata);
+                        this.storage.setItem('testObject', JSON.stringify(this.playList));
+                    } else {
+                        alert('已经存在');
+                    };
+                }      
+            }, function(response) {
+                // error callback
+            });
+        },
+        playHistoryList: function (id) {
+            this.$http.get('/detailApi.php', {
+                'id': id
+            }).then(function(data) {
+                var music = data.data.songs[0];
+                this.audio.src = music.mp3Url;
+                this.audio.play();
+            }, function(response) {
+                // error callback
+            });
+        }
+    }
+})
+Vue.filter('duration', function(time) {
+    MM = parseInt(time / 60);
+    SS = parseInt(time % 60);
+    var DT = MM + ':' + (SS < 10 ? '0' + SS : SS);
+    return DT;
+})
+</script>
+
+</html>

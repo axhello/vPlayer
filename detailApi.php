@@ -1,0 +1,11 @@
+<?php 
+
+require dirname(__FILE__) . '/MusicAPI.php';
+
+$api = new MusicAPI();
+
+$id = $_GET['id'];
+if (!empty($id)) {
+	$detail = $api->detail($id);
+	print_r($detail);
+}
