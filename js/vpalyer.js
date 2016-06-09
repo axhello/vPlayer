@@ -22,10 +22,9 @@ new Vue({
             offset: 30,
         }
     },
-    ready: function() {
+    created: function() {
         setInterval(this.setProgress, 500);
         this.mlist = JSON.parse(this.storage.getItem('testObject'));
-        
     },
     methods: {
         setAutoPlay: function() {
