@@ -6,8 +6,8 @@ new Vue({
             storage: window.localStorage,
             range: 0.5,
             progress: 0,
-            autoplay: false,
-            loop: false,
+            playingTitle: '',
+            playingArtist: '',
             showCurrentTime: '0:00',
             showDurationTime: '0:00',
             search: '',
@@ -24,18 +24,13 @@ new Vue({
     },
     ready: function() {
         setInterval(this.setProgress, 500);
-        var isAuto = this.storage.getItem('autoplay');
-        isAuto === 'true' ? this.audio.autoplay = true : this.audio.autoplay = false;
-        var isLoop = this.storage.getItem('loop');
-        isLoop === 'true' ? this.audio.loop = true : this.audio.loop = false;
         this.mlist = JSON.parse(this.storage.getItem('testObject'));
-        this.autoNextPlay();
+        
     },
     methods: {
         setAutoPlay: function() {
-            this.autoplay = !this.autoplay;
-            alert(this.autoplay);
-            this.storage.setItem('autoplay', this.autoplay);
+            this.audio.autoplay = !this.audio.autoplay;
+            alert(this.audio.autoplay);
         },
         rePlayed: function () {
             this.audio.currentTime = 0;
@@ -54,9 +49,8 @@ new Vue({
             this.audio.muted = !this.audio.muted;
         },
         setLoop: function() {
-            this.loop = !this.loop;
-            alert(this.loop);
-            this.storage.setItem('loop', this.loop);
+            this.audio.loop = !this.audio.loop;
+            alert(this.audio.loop);
         },
         setVolume: function() {
             return this.audio.volume = this.range;
@@ -95,9 +89,11 @@ new Vue({
                 var mdata = {
                     'id': result.id,
                     'title': result.name,
-                    'url':result.mp3Url,
-                    'artists':result.artists[0].name
+                    'url': result.mp3Url,
+                    'artists': result.artists
                 };
+                this.playingTitle = result.name;
+                this.playingArtist = result.artists;
                 this.audio.src = mdata.url;
                 this.audio.play();
                 var obj = JSON.parse(this.storage.getItem('testObject'));
@@ -124,16 +120,19 @@ new Vue({
                 // error callback
             });
         },
-        playHistoryList: function(id) {
+        playHistoryList: function(id,index) {
             this.$http.get('api/detailApi.php', {
                 'id': id
             }).then(function(data) {
                 var music = data.data.songs[0];
                 this.audio.src = music.mp3Url;
                 this.audio.play();
+                this.playingTitle = music.name;
+                this.playingArtist = music.artists;
             }, function(response) {
                 // error callback
             });
+            this.audio.addEventListener("ended", this.autoNextPlay);
         },
         previousPage: function() {
             this.pages = this.pages - this.offset;
@@ -160,10 +159,15 @@ new Vue({
                 // error callback
             });
         },
-        autoNextPlay: function() {
-            this.audio.addEventListener('ended', function() {
-                alert('over');
-            }, true);
+        autoNextPlay: function () {
+            var obj = JSON.parse(this.storage.getItem('testObject'));
+            if (!this.audio.loop) {
+                for(var i = 0; i < obj.length; i++) {
+                    this.audio.pause();
+                    this.audio.src = obj[i].url;
+                    setTimeout(this.setPlay, 1000);
+                }
+            }
         }
     }
 })

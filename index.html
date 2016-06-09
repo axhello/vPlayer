@@ -13,8 +13,8 @@
 <body>
     <div class="container">
         <div id="status" style="margin: 4em auto"></div>
-        <audio>
-            <source src="http://m2.music.126.net/qkkIu30Cg-BUgzDABCfWdg==/6665239489152108.mp3" type="audio/mp3">
+        <audio controls src="http://m2.music.126.net/qkkIu30Cg-BUgzDABCfWdg==/6665239489152108.mp3">
+            <!-- <source src="http://m2.music.126.net/qkkIu30Cg-BUgzDABCfWdg==/6665239489152108.mp3" type="audio/mp3"> -->
         </audio>
         <p>
             <button class="btn btn-success" @click="setPlay">播放</button>
@@ -37,7 +37,8 @@
         <div>{{ range }}</div>
         <p>
             <div class="col-md-1"><span>Time: </span></div>
-            <div class="col-md-6"><span>{{ showCurrentTime }}</span>/<span>{{ showDurationTime }}</span></div>
+            <div class="col-md-3"><span>{{ showCurrentTime }}</span>/<span>{{ showDurationTime }}</span></div>
+            <div class="col-md-3">正在播放的歌曲：<span>{{playingTitle}}</span> - <span>{{playingArtist[0].name}}{{'/'+playingArtist[1].name}}{{'/'+playingArtist[2].name}}</span></div>
         </p>
         <div class="col-md-12">
             <div class="progress" style="margin: 1em auto">
@@ -86,7 +87,7 @@
         </div>
         <div><h3 style="text-align: center">听过的歌</h3></div>
         <hr>
-        <div class="bs-example" data-example-id="striped-table">
+        <div v-el:msg class="bs-example" data-example-id="striped-table">
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -99,18 +100,18 @@
                 </thead>
                 <tbody v-if="mlist != ''">
                     <tr v-for="paly in mlist">
-                        <th scope="row"><span @click="playHistoryList(paly.id)" class="glyphicon glyphicon-headphones"></span></th>
+                        <th scope="row"><span @click="playHistoryList(paly.id,$index)" class="glyphicon glyphicon-headphones"></span></th>
                         <td>{{ paly.id }}</td>
                         <td>{{ paly.title }}</td>
-                        <td>{{ paly.artists }}</td>
+                         <td>{{ paly.artists[0].name }}{{ '/'+paly.artists[1].name }}{{ '/'+paly.artists[2].name }}</td>
                         <td>{{ paly.url }}</td>
                     </tr>
                     <br v-else>
                     <tr v-for="paly in playList">
-                        <th scope="row"><span @click="playHistoryList(paly.id)" class="glyphicon glyphicon-headphones"></span></th>
+                        <th scope="row"><span @click="playHistoryList(paly.id,$index)" class="glyphicon glyphicon-headphones"></span></th>
                         <td>{{ paly.id }}</td>
                         <td>{{ paly.title }}</td>
-                        <td>{{ paly.artists }}</td>
+                        <td>{{ paly.artists[0].name }}{{ '/'+paly.artists[1].name }}{{ '/'+paly.artists[2].name }}</td>
                         <td>{{ paly.url }}</td>
                     </tr>
                 </tbody>
