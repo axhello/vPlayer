@@ -1,4 +1,4 @@
-new Vue({
+var vm = new Vue({
     el: 'body',
     data: function() {
         return {
@@ -10,6 +10,8 @@ new Vue({
             playingArtist: '',
             showCurrentTime: '0:00',
             showDurationTime: '0:00',
+            currentIndex: 0,
+            index: 0,
             search: '',
             lists: [],
             playList: [],
@@ -22,7 +24,7 @@ new Vue({
             offset: 30,
         }
     },
-    created: function() {
+    ready: function() {
         setInterval(this.setProgress, 500);
         this.mlist = JSON.parse(this.storage.getItem('testObject'));
     },
@@ -31,7 +33,7 @@ new Vue({
             this.audio.autoplay = !this.audio.autoplay;
             alert(this.audio.autoplay);
         },
-        rePlayed: function () {
+        rePlayed: function() {
             this.audio.currentTime = 0;
         },
         setPlay: function() {
@@ -39,10 +41,6 @@ new Vue({
         },
         setPause: function() {
             this.audio.pause();
-        },
-        nextMusic: function() {
-            this.audio.src = 'http://m2.music.126.net/HC_jFzN5KjTRShZ3-vL8HA==/7761452581574887.mp3'
-            this.audio.play();
         },
         seMtuted: function() {
             this.audio.muted = !this.audio.muted;
@@ -52,7 +50,16 @@ new Vue({
             alert(this.audio.loop);
         },
         setVolume: function() {
-            return this.audio.volume = this.range;
+            this.audio.volume = this.range;
+        },
+        nextPlay: function() {
+            if (this.currentIndex == -1) {
+                this.currentIndex = 0;
+            } else if (this.currentIndex == 0) {
+                this.currentIndex = (this.data.length - 1);
+            } else {
+                this.currentIndex--;
+            }
         },
         setProgress: function() {
             var currentTime = this.audio.currentTime;
@@ -100,8 +107,8 @@ new Vue({
                     this.playList.push(mdata);
                     this.storage.setItem('testObject', JSON.stringify(this.playList));
                 } else {
-                    for(var i = 0; i < obj.length; i++) {
-                        if(mdata.url === obj[i].url){
+                    for (var i = 0; i < obj.length; i++) {
+                        if (mdata.url === obj[i].url) {
                             this.lock = true;
                             break;
                         } else {
@@ -114,12 +121,12 @@ new Vue({
                     } else {
                         alert('歌曲已经存在歌单');
                     };
-                }      
+                }
             }, function(response) {
                 // error callback
             });
         },
-        playHistoryList: function(id,index) {
+        playHistoryList: function(id, index) {
             this.$http.get('api/detailApi.php', {
                 'id': id
             }).then(function(data) {
@@ -128,6 +135,8 @@ new Vue({
                 this.audio.play();
                 this.playingTitle = music.name;
                 this.playingArtist = music.artists;
+                this.currentIndex = index;
+                console.log(this.currentIndex);
             }, function(response) {
                 // error callback
             });
@@ -158,15 +167,25 @@ new Vue({
                 // error callback
             });
         },
-        autoNextPlay: function () {
+        autoNextPlay: function() {
             var obj = JSON.parse(this.storage.getItem('testObject'));
-            if (!this.audio.loop) {
-                for(var i = 0; i < obj.length; i++) {
-                    this.audio.pause();
-                    this.audio.src = obj[i].url;
-                    setTimeout(this.setPlay, 1000);
-                }
+            this.index = ++this.currentIndex;
+            if (this.index == obj.length) {
+                this.currentIndex = 0;
+                this.index = 0;
             }
+            if (!this.audio.loop) {
+                this.audio.pause();
+                this.audio.src = obj[this.index].url;
+                this.audio.load();
+                this.playingTitle = obj[this.index].title;
+                this.playingArtist = obj[this.index].artists;
+                setTimeout(this.setPlay, 1000);
+            }
+        },
+        clickProgress: function(event) {
+            var target = event.target;
+            console.log(target.children[0].style.width);
         }
     }
 })
