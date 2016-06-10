@@ -5,86 +5,8 @@
     <meta charset="UTF-8">
     <title>vPlayer</title>
     <link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-    <script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://cdn.bootcss.com/vue/1.0.21/vue.min.js"></script>
     <script src="http://cdn.bootcss.com/vue-resource/0.7.2/vue-resource.min.js"></script>
-    <style type="text/css">
-    .mejs-volume-slider {
-        background: #14181a;
-        height: 150px;
-        margin-left: -25px;
-        position: absolute;
-        top: 0px;
-        left: 50%;
-        width: 50px;
-        z-index: 999;
-    }
-    
-    .mejs-volume-slider .mejs-volume-total {
-        position: absolute;
-        left: 24px;
-        top: 8px;
-        width: 2px;
-        height: 100px;
-        background: #ddd;
-        background: rgba(255, 255, 255, .5);
-        margin: 0;
-    }
-    
-    .mejs-volume-total {
-        background: rgba(255, 255, 255, .2);
-        height: 110px;
-        position: absolute;
-        top: 20px;
-        left: 24px;
-    }
-    
-    .mejs-volume-current,
-    .mejs-volume-handle {
-        background: #fff;
-    }
-    
-    .mejs-volume-slider .mejs-volume-current {
-        position: absolute;
-        left: 24px;
-        top: 8px;
-        width: 2px;
-        height: 100px;
-        background: #ddd;
-        background: rgba(255, 255, 255, .9);
-        margin: 0;
-    }
-    
-    .mejs-volume-current {
-        height: 110px;
-        position: absolute;
-        top: 20px;
-        left: 24px;
-    }
-    
-    .mejs-volume-slider .mejs-volume-handle {
-        border-radius: 8px;
-        height: 16px;
-        position: absolute;
-        top: 12px;
-        left: 17px;
-    }
-    
-    .mejs-volume-handle {
-        position: absolute;
-        left: 4px;
-        top: -3px;
-        width: 16px;
-        height: 6px;
-        background: #ddd;
-        background: rgba(255, 255, 255, .9);
-        cursor: N-resize;
-        -webkit-border-radius: 1px;
-        -moz-border-radius: 1px;
-        border-radius: 1px;
-        margin: 0;
-    }
-    </style>
 </head>
 
 <body>
@@ -171,10 +93,10 @@
                 </ul>
             </nav>
         </div>
-        <div>
-            <h3 style="text-align: center">听过的歌</h3></div>
+
+        <h3 style="text-align: center">听过的歌</h3>
         <hr>
-        <div v-el:msg class="bs-example" data-example-id="striped-table">
+        <div class="bs-example" data-example-id="striped-table">
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -187,7 +109,7 @@
                 </thead>
                 <tbody v-if="mlist.length != ''">
                     <tr v-for="paly in mlist">
-                        <th scope="row"><span @click="playHistoryList(paly.id,$index)" class="glyphicon glyphicon-headphones"></span></th>
+                        <th scope="row"><i @click="playHistoryList(paly.id,$index)" class="fa fa-headphones fa-lg" aria-hidden="true"></i></th>
                         <td>{{ paly.id }}</td>
                         <td>{{ paly.title }}</td>
                         <td>{{ paly.artists[0].name }}{{ '/'+paly.artists[1].name }}{{ '/'+paly.artists[2].name }}</td>
@@ -195,7 +117,7 @@
                     </tr>
                     <br v-else>
                     <tr v-for="paly in playList">
-                        <th scope="row"><span @click="playHistoryList(paly.id,$index)" class="glyphicon glyphicon-headphones"></span></th>
+                        <th scope="row"><i @click="playHistoryList(paly.id,$index)" class="fa fa-headphones fa-lg" aria-hidden="true"></i></th>
                         <td>{{ paly.id }}</td>
                         <td>{{ paly.title }}</td>
                         <td>{{ paly.artists[0].name }}{{ '/'+paly.artists[1].name }}{{ '/'+paly.artists[2].name }}</td>

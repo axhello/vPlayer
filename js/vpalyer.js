@@ -6,27 +6,32 @@ var vm = new Vue({
             storage: window.localStorage,
             range: 0.5,
             progress: 0,
-            playingTitle: '',
-            playingArtist: '',
+            playingTitle: 'Hero',
+            playingArtist: [{name:'SmK'}],
             showCurrentTime: '0:00',
             showDurationTime: '0:00',
             currentIndex: 0,
             index: 0,
             search: '',
+            picUrl: '',
             lists: [],
             playList: [],
             mlist: [],
             next: false,
             pagenumber: 1,
-            isnext: false,
-            lock: false,
             pages: 0,
             offset: 30,
+            isnext: false,
+            lock: false,
+            listOpen: false,
+            isMuted: false,
+            isPlay: false,
         }
     },
     ready: function() {
         setInterval(this.setProgress, 500);
         this.mlist = JSON.parse(this.storage.getItem('testObject'));
+        this.audio.addEventListener("ended", this.autoNextPlay);
     },
     methods: {
         setAutoPlay: function() {
@@ -38,12 +43,12 @@ var vm = new Vue({
         },
         setPlay: function() {
             this.audio.play();
-        },
-        setPause: function() {
-            this.audio.pause();
+            this.isPlay = !this.isPlay
+            if (!this.isPlay) {this.audio.pause()}
         },
         seMtuted: function() {
             this.audio.muted = !this.audio.muted;
+            this.isMuted = this.audio.muted;
         },
         setLoop: function() {
             this.audio.loop = !this.audio.loop;
@@ -51,6 +56,14 @@ var vm = new Vue({
         },
         setVolume: function() {
             this.audio.volume = this.range;
+            if (this.audio.volume === 0) {
+                this.isMuted = true;
+            } else {
+                this.isMuted = false;
+            }
+        },
+        isListOpen: function () {
+            this.listOpen = !this.listOpen
         },
         nextPlay: function() {
             if (this.currentIndex == -1) {
@@ -88,6 +101,7 @@ var vm = new Vue({
             });
         },
         playMusic: function(id) {
+            this.isPlay = true;
             this.$http.get('api/detailApi.php', {
                 'id': id
             }).then(function(data) {
@@ -96,10 +110,12 @@ var vm = new Vue({
                     'id': result.id,
                     'title': result.name,
                     'url': result.mp3Url,
+                    'picUrl': result.album.picUrl,
                     'artists': result.artists
                 };
                 this.playingTitle = result.name;
                 this.playingArtist = result.artists;
+                this.picUrl = result.album.picUrl;
                 this.audio.src = mdata.url;
                 this.audio.play();
                 var obj = JSON.parse(this.storage.getItem('testObject'));
@@ -127,6 +143,7 @@ var vm = new Vue({
             });
         },
         playHistoryList: function(id, index) {
+            this.isPlay = true;
             this.$http.get('api/detailApi.php', {
                 'id': id
             }).then(function(data) {
@@ -135,12 +152,12 @@ var vm = new Vue({
                 this.audio.play();
                 this.playingTitle = music.name;
                 this.playingArtist = music.artists;
+                this.picUrl = music.album.picUrl;
                 this.currentIndex = index;
                 console.log(this.currentIndex);
             }, function(response) {
                 // error callback
             });
-            this.audio.addEventListener("ended", this.autoNextPlay);
         },
         previousPage: function() {
             this.pages = this.pages - this.offset;
@@ -180,7 +197,8 @@ var vm = new Vue({
                 this.audio.load();
                 this.playingTitle = obj[this.index].title;
                 this.playingArtist = obj[this.index].artists;
-                setTimeout(this.setPlay, 1000);
+                this.picUrl = obj[this.index].picUrl;
+                setTimeout(this.audio.play(), 2000);
             }
         },
         clickProgress: function(event) {

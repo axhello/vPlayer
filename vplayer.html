@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>vPlayer</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/cue.min.css">
+    <link rel="stylesheet" href="css/vplayer.css">
+    <script src="http://cdn.bootcss.com/vue/1.0.21/vue.min.js"></script>
+    <script src="http://cdn.bootcss.com/vue-resource/0.7.2/vue-resource.min.js"></script>
+</head>
+
+<body @keyup.space="setPlay">
+    <div class="container">
+        <div class="cue-playlist-container playlist-closed">
+            <div class="cuebar cue-playlist cue-tracks-count-2 has-artwork open" :class="{'is-tracklist-open': listOpen }">
+                <meta itemprop="numTracks" content="2">
+                <span class="mejs-offscreen">Audio Player</span>
+                <div id="mep_2" class="mejs-container cue-skin-cuebar" tabindex="0" role="application" aria-label="Audio Player" style="width: 100%; height: auto;">
+                    <div class="mejs-inner">
+                        <div class="mejs-mediaelement">
+                            <audio src="http://m2.music.126.net/_KADwB6cWxOYG2SEgxZXEQ==/3286440264124875.mp3" class="cue-audio" style="width: 100%; height: auto"></audio>
+                        </div>
+                        <div class="mejs-layers">
+                            <div v-if="picUrl != ''" class="mejs-layers-bg" style="background-image: url({{picUrl}}); background-color: rgb(51, 51, 51);"></div>
+                            <div v-else class="mejs-layers-bg" style="background-image: url(http://p3.music.126.net/iZOGOeVEHz0fmEV4qpUjow==/1421668538040772.jpg); background-color: rgb(51, 51, 51);"></div>
+                            <div class="mejs-poster mejs-layer" style="display: none; width: 100%; height: auto;"></div>
+                            <span class="mejs-track-artwork">
+                                <img v-if="picUrl != ''" :src="picUrl">
+                                <img v-else src="http://p3.music.126.net/iZOGOeVEHz0fmEV4qpUjow==/1421668538040772.jpg">
+                            </span>
+                            <div class="mejs-track-details" v-if="playingTitle == ''">
+                                <span class="mejs-track-artist"></span>
+                                <span class="mejs-track-title">暂无播放的歌曲</span>
+                            </div>
+                            <div class="mejs-track-details" v-else>
+                                <span class="mejs-track-artist">{{playingTitle}}</span>
+                                <span class="mejs-track-title">{{ playingArtist[0].name}}{{'/'+playingArtist[1].name}}{{'/'+playingArtist[2].name}}</span>
+                            </div>
+                        </div>
+                        <div class="mejs-controls">
+                            <div class="mejs-button mejs-previous-button mejs-previous">
+                                <button type="button" aria-controls="mep_2" title="Previous Track"></button>
+                            </div>
+                            <div class="mejs-button mejs-playpause-button mejs-play" :class="[ isPlay ? 'mejs-pause' : 'mejs-play']">
+                                <button type="button" aria-controls="mep_2" @click="setPlay" title="Play" aria-label="Play"></button>
+                            </div>
+                            <div class="mejs-button mejs-next-button mejs-next">
+                                <button type="button" aria-controls="mep_2" title="Next Track"></button>
+                            </div>
+                            <div class="mejs-time-rail" style="width: 100%;">
+                                <span class="mejs-time-total mejs-time-slider">
+                            <span class="mejs-time-buffering" style="display: none;"></span>
+                                <span class="mejs-time-loaded"></span>
+                                <span class="mejs-time-current" style="width: {{progress}}%;"></span>
+                                <span class="mejs-time-handle"></span>
+                                <span class="mejs-time-float" style="display: none; left: 400px;">
+                                <span class="mejs-time-float-current">00:00</span>
+                                <span class="mejs-time-float-corner"></span>
+                                </span>
+                                </span>
+                            </div>
+                            <div class="mejs-time" role="timer" aria-live="off">
+                                <span class="mejs-currenttime">{{ showCurrentTime }}</span>
+                                <span class="mejs-time-separator"> / </span>
+                                <span class="mejs-duration">{{ showDurationTime }}</span>
+                            </div>
+                            <div class="mejs-button mejs-volume-button" :class="[ isMuted ? 'mejs-unmute' : 'mejs-mute']">
+                                <button type="button" aria-controls="mep_2" title="静音" aria-label="静音" @click="seMtuted"></button>
+                                <div  class="mejs-volume-slider">
+                                    <input v-model="range" @change="setVolume" type="range" min="0" max="1" step=0.1>
+                                </div>
+                            </div>
+                            <div class="mejs-button mejs-toggle-playlist-button mejs-toggle-playlist is-closed">
+                                <button type="button" aria-controls="mep_2" @click="isListOpen"></button>
+                            </div>
+                            <div class="mejs-button mejs-loop-button is-closed">
+                                <button type="button" aria-controls="mep_2" @click="setLoop"></button>
+                            </div>
+                            <div class="mejs-button mejs-toggle-player-button mejs-toggle-player">
+                                <button type="button" class="fa fa-random" aria-hidden="true"></button>
+                            </div>
+                        </div>
+                        <div class="mejs-clear"></div>
+                    </div>
+                </div>
+                <div class="cue-tracks" style="max-height: 398px;">
+                    <ol class="cue-tracks-list" v-if="mlist.length != 0">
+                        <li class="cue-track is-playable" :class="{'is-current': currentIndex == $index }" v-for="paly in mlist" @click="playHistoryList(paly.id,$index)">
+                            <span class="cue-track-length cue-track-cell">
+                                {{$index}}
+                            </span>
+                            <span class="cue-track-details cue-track-cell">
+                                <span class="cue-track-title" itemprop="name">{{ paly.title }}</span>
+                            <span class="cue-track-artist" itemprop="byArtist">{{ paly.artists[0].name }}{{ '/'+paly.artists[1].name }}{{ '/'+paly.artists[2].name }}</span>
+                            </span>
+                            <span class="cue-track-length cue-track-cell">
+                                <a href="#"><i class="fa fa-cloud-download fa-lg" aria-hidden="true"></i></a>
+                            </span>
+                        </li>
+                        <li class="cue-track is-playable" v-else :class="{'is-current': currentIndex == $index }" v-for="paly in playList" @click="playHistoryList(paly.id,$index)">
+                            <span class="cue-track-length cue-track-cell">
+                                {{$index}}
+                            </span>
+                            <span class="cue-track-details cue-track-cell">
+                                <span class="cue-track-title" itemprop="name">{{ paly.title }}</span>
+                            <span class="cue-track-artist" itemprop="byArtist">{{ paly.artists[0].name }}{{ '/'+paly.artists[1].name }}{{ '/'+paly.artists[2].name }}</span>
+                            </span>
+                            <span class="cue-track-length cue-track-cell">
+                                <a href="#"><i class="fa fa-cloud-download fa-lg" aria-hidden="true"></i></a>
+                            </span>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-md-offset-3">
+            <form action="" @submit.prevent>
+                <div class="input-group" style="margin: 2em auto">
+                    <input type="text" @keyup.enter="formSubmit" @blur="formSubmit" @change="formSubmit" class="form-control" name="search" placeholder="Search for..." v-model="search">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+        <div class="bs-example" data-example-id="striped-table">
+            <table class="table table-striped">
+                <thead v-show="isnext">
+                    <tr>
+                        <th>试听</th>
+                        <th>歌曲名</th>
+                        <th>歌手</th>
+                        <th>专辑</th>
+                        <th>下载</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="list in lists">
+                        <th><i @click="playMusic(list.id)" class="fa fa-headphones fa-lg" aria-hidden="true"></i>
+                        </th>
+                        <td>{{ list.name }}</td>
+                        <td>{{ list.artists[0].name }}{{'/'+list.artists[1].name}}{{ '/'+ list.artists[2].name}}</td>
+                        <td>《{{ list.album.name }}》</td>
+                        <td>
+                            <a href="javascript:alert('未开启');">
+                                <i class="fa fa-cloud-download fa-lg" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <nav style=" margin-bottom: 5em;">
+            <ul class="pager">
+                <li v-show="next"><a href="#" @click.pervent="previousPage()">上一页</a></li>
+                <li v-show="isnext"><a href="#" @click.pervent="nextPage">下一页</a></li>
+            </ul>
+        </nav>
+    </div>
+    <script src="js/vpalyer.js"></script>
+</body>
+
+</html>

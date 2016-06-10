@@ -1,0 +1,21 @@
+.box{
+	margin-top: 5em;
+}
+.mejs-volume-slider {
+	padding: 10px;
+}
+input[type='range'] {
+    -webkit-appearance: slider-vertical;
+    background-color: #ccc;
+    height: 140px;
+    margin: 8px auto;
+}
+
+input[type=range]::-webkit-slider-vertical {
+    -webkit-appearance: slider-vertical;
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: red;
+}
