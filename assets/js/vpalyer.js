@@ -1,5 +1,5 @@
 var vm = new Vue({
-    el: 'body',
+    el: 'html',
     data: function() {
         return {
             audio: document.getElementsByTagName('audio')[0],
@@ -7,13 +7,13 @@ var vm = new Vue({
             range: 0.5,
             progress: 0,
             playingTitle: 'Hero',
-            playingArtist: [{name:'SmK'}],
+            playingArtist: [{ name: 'SmK' }],
             showCurrentTime: '0:00',
             showDurationTime: '0:00',
             currentIndex: 0,
             index: 0,
             search: '',
-            picUrl: '',
+            picUrl: 'http://p3.music.126.net/iZOGOeVEHz0fmEV4qpUjow==/1421668538040772.jpg',
             lists: [],
             playList: [],
             mlist: [],
@@ -29,6 +29,7 @@ var vm = new Vue({
         }
     },
     ready: function() {
+        this.audio.volume = 0.3;
         setInterval(this.setProgress, 500);
         this.mlist = JSON.parse(this.storage.getItem('testObject'));
         this.audio.addEventListener("ended", this.autoNextPlay);
@@ -44,9 +45,9 @@ var vm = new Vue({
         setPlay: function() {
             this.audio.play();
             this.isPlay = !this.isPlay
-            if (!this.isPlay) {this.audio.pause()}
+            if (!this.isPlay) { this.audio.pause() }
         },
-        seMtuted: function() {
+        setMtuted: function() {
             this.audio.muted = !this.audio.muted;
             this.isMuted = this.audio.muted;
         },
@@ -62,17 +63,12 @@ var vm = new Vue({
                 this.isMuted = false;
             }
         },
-        isListOpen: function () {
+        isListOpen: function() {
             this.listOpen = !this.listOpen
         },
-        nextPlay: function() {
-            if (this.currentIndex == -1) {
-                this.currentIndex = 0;
-            } else if (this.currentIndex == 0) {
-                this.currentIndex = (this.data.length - 1);
-            } else {
-                this.currentIndex--;
-            }
+        whoActive: function () {
+            this.isActive.player = !this.isActive.player;
+            this.isActive.search = !this.isActive.search
         },
         setProgress: function() {
             var currentTime = this.audio.currentTime;
@@ -91,6 +87,9 @@ var vm = new Vue({
             this.progress = value.toFixed(3);
         },
         formSubmit: function() {
+            if (this.search == '') {
+                return false;
+            }
             this.$http.get('api/searchApi.php', {
                 's': this.search
             }).then(function(data) {
@@ -185,6 +184,7 @@ var vm = new Vue({
             });
         },
         autoNextPlay: function() {
+            this.isPlay = false;
             var obj = JSON.parse(this.storage.getItem('testObject'));
             this.index = ++this.currentIndex;
             if (this.index == obj.length) {
@@ -198,12 +198,19 @@ var vm = new Vue({
                 this.playingTitle = obj[this.index].title;
                 this.playingArtist = obj[this.index].artists;
                 this.picUrl = obj[this.index].picUrl;
-                setTimeout(this.audio.play(), 2000);
+                setTimeout(this.setPlay, 2000);
             }
         },
         clickProgress: function(event) {
+            var a = this.audio;
+            var z = a.buffered.end(a.buffered.length-1);
             var target = event.target;
-            console.log(target.children[0].style.width);
+            console.log(target.offsetWidth - this.progress);
+            console.log(z);
+            // setInterval(function() {
+            //     drag.style.left = (audio.currentTime / audio.duration) * (window.innerWidth - 30) + "px";
+            //     speed.style.left = -((window.innerWidth) - (audio.currentTime / audio.duration) * (window.innerWidth - 30)) + "px";
+            // }, 500);
         }
     }
 })

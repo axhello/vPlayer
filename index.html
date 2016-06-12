@@ -1,133 +1,167 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" :class="{'site-player-is-open':listOpen}">
 
 <head>
     <meta charset="UTF-8">
     <title>vPlayer</title>
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-    <script src="http://cdn.bootcss.com/vue/1.0.21/vue.min.js"></script>
-    <script src="http://cdn.bootcss.com/vue-resource/0.7.2/vue-resource.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="assets/css/view.css">
+    <script src="assets/js/vue.min.js"></script>
+    <script src="assets/js/vue-resource.min.js"></script>
 </head>
 
-<body>
-    <div class="container">
-        <div class="vp-inner" style="margin: 2em auto">
-        </div>
-        <audio src="http://m2.music.126.net/qkkIu30Cg-BUgzDABCfWdg==/6665239489152108.mp3">
-        </audio>
-        <p>
-            <button class="btn btn-success" @click="setPlay">播放</button>
-            <button class="btn btn-danger" @click="setPause">暂停</button>
-            <button class="btn btn-primary" @click="rePlayed">重新播放</button>
-            <button class="btn btn-danger" @click="seMtuted">静音</button>
-            <button class="btn btn-warning" @click="setAutoPlay">自动播放</button>
-            <button class="btn btn-info" @click="setLoop">循环</button>
-        </p>
-        <p>
-            <div class="col-md-1">
-                <span>Volume:</span>
-            </div>
-            <div class="col-md-6">
-                <a href="#" class="mejs-volume-slider" style="display: none;">
-                    <div class="mejs-volume-total"></div>
-                    <div class="mejs-volume-current" style="height: 110px; top: 20px;"></div>
-                    <div class="mejs-volume-handle" style="top: 12px;"></div>
-                </a>
-                <input v-model="range" @change="setVolume" type="range" min="0" max="1" step=0.1 value="" />
-            </div>
-        </p>
-        <div>{{ range }}</div>
-        <p>
-            <div class="col-md-1"><span>Time: </span></div>
-            <div class="col-md-3"><span>{{ showCurrentTime }}</span>/<span>{{ showDurationTime }}</span></div>
-            <div class="col-md-8">正在播放的歌曲：<span>{{playingTitle}}</span><span>{{' - '+playingArtist[0].name}}{{'/'+playingArtist[1].name}}{{'/'+playingArtist[2].name}}</span></div>
-        </p>
-        <div class="col-md-12" style="margin: 1em auto">
-            <div class="progress" @click="clickProgress($event)">
-                <div class="progress-bar" style="width: {{progress}}%">
-                    <div class="button-holder">
-                        <div class="progress-button" style="left: {{progress}}%"> </div>
-                    </div>
+<body class="home page page-template-landing">
+    <div id="viewport-pane">
+    	<audio src="http://m2.music.126.net/_KADwB6cWxOYG2SEgxZXEQ==/3286440264124875.mp3"></audio>
+        <div id="page" class="hfeed site">
+            <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+            <header id="masthead" class="site-header" style="background-image: url({{picUrl}});">
+                <div class="site-branding">
+                    <h1 class="site-title">
+                    	<a href="#" rel="home">vPlayer</a>
+                    	</h1>
+                    <div class="site-description">Just another vPlayer Demo site</div>
+                </div>
+            </header>
+            <div id="content" class="site-content">
+                <main id="primary" class="content-area">
+                    <article id="post" class="post page type-page status-publish hentry">
+                        <header class="entry-header">
+                            <h1 class="entry-title">New Song!</h1> 
+                        </header>
+	                    <div class="entry-content">
+	                        <p>Enjoy the song from the <em>NetEaseCloud</em> cloud!</p>
+	                        <p><a class="button" href="#">Let's Go</a></p>
+	                    </div>
+                    </article>
+                </main>
+            </div><!-- #content -->
+        </div><!-- #page -->
+    </div><!-- #viewport -->
+    <button id="site-player-toggle" class="site-player-toggle" 
+    :class="{'is-open':listOpen}" @click="isListOpen">Toggle Player</button>
+    <div id="site-player-panel" class="site-player-panel">
+        <div class="site-player tracks-count-8 is-shuffling is-playing">
+            <div class="controls">
+                <button class="previous">Previous Track</button>
+                <button class="play-pause" @click="setPlay" :class="[ isPlay ? 'pause' : 'play']">Pause</button>
+                <button class="next">Next Track</button>
+                <button class="repeat" title="Repeat">Repeat</button>
+                <button class="shuffle is-active" title="Disable Shuffle">Disable Shuffle</button>
+                <div class="volume-bar">
+                    <div class="volume-bar-current"></div>
+                </div>
+                <div class="progress-bar">
+                    <div class="play-bar" style="width: {{progress}}%;"></div>
+                </div>
+                <div class="times">
+                    <span class="current-time">{{ showCurrentTime }}</span> /
+                    <span class="duration">{{ showDurationTime }}</span>
+                </div>
+                <div class="volume-panel">
+                    <button class="volume-toggle" :class="{'is-muted': isMuted}" @click="setMtuted">Mute</button>
+                    <input v-model="range" @change="setVolume" type="range" min="0" max="1" step=0.1>
                 </div>
             </div>
-        </div>
-        <div class="col-md-6 col-md-offset-3">
-            <form action="" @submit.prevent>
-                <div class="input-group" style="margin: 2em auto">
-                    <input type="text" @keyup.enter="formSubmit" @blur="formSubmit" @change="formSubmit" class="form-control" name="search" placeholder="Search for..." v-model="search">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-                </div>
-            </form>
-        </div>
-        <div class="bs-example" data-example-id="striped-table">
-            <table class="table table-striped">
-                <thead v-show="isnext">
-                    <tr>
-                        <th>试听</th>
-                        <th>歌曲名</th>
-                        <th>歌手</th>
-                        <th>专辑</th>
-                        <th>下载</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="list in lists">
-                        <th><span @click="playMusic(list.id)" class="glyphicon glyphicon-headphones" style="font-size: 20px"></span></th>
-                        <td>{{ list.name }}</td>
-                        <td>{{ list.artists[0].name }}{{'/'+list.artists[1].name}}{{ '/'+ list.artists[2].name}}</td>
-                        <td>《{{ list.album.name }}》</td>
-                        <td>
-                            <a href="javascript:alert('未开启');">
-                                <span class="glyphicon glyphicon-download" style="font-size: 20px"></span>
-                           </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <nav>
-                <ul class="pager">
-                    <li v-show="next"><a href="#" @click.pervent="previousPage()">上一页</a></li>
-                    <li v-show="isnext"><a href="#" @click.pervent="nextPage">下一页</a></li>
-                </ul>
-            </nav>
-        </div>
-
-        <h3 style="text-align: center">听过的歌</h3>
-        <hr>
-        <div class="bs-example" data-example-id="striped-table">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>试听</th>
-                        <th>歌曲id</th>
-                        <th>歌曲名</th>
-                        <th>歌手</th>
-                        <th>MP3链接</th>
-                    </tr>
-                </thead>
-                <tbody v-if="mlist.length != ''">
-                    <tr v-for="paly in mlist">
-                        <th scope="row"><i @click="playHistoryList(paly.id,$index)" class="fa fa-headphones fa-lg" aria-hidden="true"></i></th>
-                        <td>{{ paly.id }}</td>
-                        <td>{{ paly.title }}</td>
-                        <td>{{ paly.artists[0].name }}{{ '/'+paly.artists[1].name }}{{ '/'+paly.artists[2].name }}</td>
-                        <td>{{ paly.url }}</td>
-                    </tr>
-                    <br v-else>
-                    <tr v-for="paly in playList">
-                        <th scope="row"><i @click="playHistoryList(paly.id,$index)" class="fa fa-headphones fa-lg" aria-hidden="true"></i></th>
-                        <td>{{ paly.id }}</td>
-                        <td>{{ paly.title }}</td>
-                        <td>{{ paly.artists[0].name }}{{ '/'+paly.artists[1].name }}{{ '/'+paly.artists[2].name }}</td>
-                        <td>{{ paly.url }}</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="playlist">
+                <ol class="tracks-list">
+                    <li class="track is-current is-playing">
+                        <span class="track-status track-cell"></span>
+                        <span class="track-details track-cell">
+						<span class="track-title">Into My Own</span>
+                        <span class="track-artist">KNOBLE</span>
+                        </span>
+                        <span class="track-actions track-cell"></span>
+                        <span class="track-length track-cell"></span>
+                    </li>
+                    <li class="track">
+                        <span class="track-status track-cell"></span>
+                        <span class="track-details track-cell">
+						<span class="track-title">The Burial of the Dead</span>
+                        <span class="track-artist">KNOBLE</span>
+                        </span>
+                        <span class="track-actions track-cell"></span>
+                        <span class="track-length track-cell"></span>
+                    </li>
+                    <li class="track">
+                        <span class="track-status track-cell"></span>
+                        <span class="track-details track-cell">
+						<span class="track-title">What the Thunder Said</span>
+                        <span class="track-artist">KNOBLE</span>
+                        </span>
+                        <span class="track-actions track-cell"></span>
+                        <span class="track-length track-cell"></span>
+                    </li>
+                    <li class="track">
+                        <span class="track-status track-cell"></span>
+                        <span class="track-details track-cell">
+						<span class="track-title">The Man, The Rabbit, and The Buffalo</span>
+                        <span class="track-artist">KNOBLE</span>
+                        </span>
+                        <span class="track-actions track-cell"></span>
+                        <span class="track-length track-cell"></span>
+                    </li>
+                    <li class="track">
+                        <span class="track-status track-cell"></span>
+                        <span class="track-details track-cell">
+						<span class="track-title">Seven Days In Winter</span>
+                        <span class="track-artist">KNOBLE</span>
+                        </span>
+                        <span class="track-actions track-cell"></span>
+                        <span class="track-length track-cell"></span>
+                    </li>
+                    <li class="track">
+                        <span class="track-status track-cell"></span>
+                        <span class="track-details track-cell">
+						<span class="track-title">Keeper of the Winds</span>
+                        <span class="track-artist">KNOBLE</span>
+                        </span>
+                        <span class="track-actions track-cell"></span>
+                        <span class="track-length track-cell"></span>
+                    </li>
+                    <li class="track">
+                        <span class="track-status track-cell"></span>
+                        <span class="track-details track-cell">
+						<span class="track-title">Piccadilly Circus</span>
+                        <span class="track-artist">KNOBLE</span>
+                        </span>
+                        <span class="track-actions track-cell"></span>
+                        <span class="track-length track-cell"></span>
+                    </li>
+                    <li class="track">
+                        <span class="track-status track-cell"></span>
+                        <span class="track-details track-cell">
+						<span class="track-title">The Wounded King</span>
+                        <span class="track-artist">KNOBLE</span>
+                        </span>
+                        <span class="track-actions track-cell"></span>
+                        <span class="track-length track-cell"></span>
+                    </li>
+                    <li class="track">
+                        <span class="track-status track-cell"></span>
+                        <span class="track-details track-cell">
+						<span class="track-title">The Wounded King</span>
+                        <span class="track-artist">KNOBLE</span>
+                        </span>
+                        <span class="track-actions track-cell"></span>
+                        <span class="track-length track-cell"></span>
+                    </li>
+                </ol>
+            </div>
         </div>
     </div>
+    <div class="site-current-track-details">
+		<span class="title">{{playingTitle}}</span>
+		-
+		<span class="artist">{{ playingArtist[0].name}}{{'/'+playingArtist[1].name}}{{'/'+playingArtist[2].name}}</span>
+		<div class="times">
+			<span class="current-time">{{ showCurrentTime }}</span>
+			/
+			<span class="duration">{{ showDurationTime }}</span>
+		</div>
+	</div>
+	<button class="site-play-pause-button"
+	:class="[ isPlay ? 'pause' : 'play']" @click="setPlay">Pause</button>
+    <script src="assets/js/vpalyer.js"></script>
 </body>
-<script src="js/vpalyer.js"></script>
 
 </html>

@@ -1,0 +1,834 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"al",
+				"alert"
+			],
+			[
+				"mag",
+				"margin-left"
+			],
+			[
+				"v",
+				"v-if=〔attribute〕"
+			],
+			[
+				"v-e",
+				"v-else"
+			],
+			[
+				"v-i",
+				"v-if"
+			],
+			[
+				"re",
+				"result"
+			],
+			[
+				"b",
+				"button"
+			],
+			[
+				"ve",
+				"v-else"
+			],
+			[
+				"te",
+				"text-align"
+			],
+			[
+				"fa",
+				"fa-lg"
+			],
+			[
+				"marg",
+				"margin-top"
+			],
+			[
+				"ma",
+				"margin"
+			],
+			[
+				"fon",
+				"font-size: 〔property〕"
+			],
+			[
+				"le",
+				"length"
+			],
+			[
+				"seti",
+				"setTimeout〔function〕"
+			],
+			[
+				"auto",
+				"autoNextPlay"
+			],
+			[
+				"au",
+				"auto〔value〕"
+			],
+			[
+				"lo",
+				"loop"
+			],
+			[
+				"p",
+				"pause"
+			],
+			[
+				"setp",
+				"setPlay"
+			],
+			[
+				"a",
+				"audio"
+			],
+			[
+				"m",
+				"margin"
+			],
+			[
+				"s",
+				"style	Attr"
+			],
+			[
+				"tr",
+				"this.db.transaction"
+			],
+			[
+				"me",
+				"muted"
+			],
+			[
+				"se",
+				"setInterval"
+			],
+			[
+				"o",
+				"offset"
+			],
+			[
+				"ne",
+				"next"
+			],
+			[
+				"page",
+				"pages"
+			],
+			[
+				"col-md",
+				"col-md-6"
+			],
+			[
+				"pl",
+				"play"
+			],
+			[
+				"pal",
+				"play"
+			],
+			[
+				"get",
+				"getItem"
+			],
+			[
+				"set",
+				"setItem"
+			],
+			[
+				"paly",
+				"playList"
+			],
+			[
+				"va",
+				"var"
+			],
+			[
+				"de",
+				"$detail〔variable〕"
+			],
+			[
+				"item",
+				"item-content"
+			],
+			[
+				"co",
+				"code	Tag"
+			],
+			[
+				"text",
+				"text-indent"
+			],
+			[
+				"c",
+				"class	Attr"
+			],
+			[
+				"z",
+				"z-index"
+			],
+			[
+				"max",
+				"max-width"
+			],
+			[
+				"it",
+				"items"
+			],
+			[
+				"cs",
+				"css/"
+			],
+			[
+				"src",
+				"src/"
+			],
+			[
+				"i",
+				"item"
+			],
+			[
+				"bo",
+				"body"
+			],
+			[
+				"div",
+				"div3"
+			],
+			[
+				"local",
+				"location〔variable〕"
+			],
+			[
+				"lg",
+				"login"
+			],
+			[
+				"log",
+				"login"
+			],
+			[
+				"ec",
+				"echo"
+			],
+			[
+				"class",
+				"class"
+			],
+			[
+				"Aritcl",
+				"ArticlesRequest"
+			],
+			[
+				"fo",
+				"from"
+			],
+			[
+				"vu",
+				"vuec	Vue component"
+			],
+			[
+				"com",
+				"components"
+			],
+			[
+				"to",
+				"top"
+			],
+			[
+				"background-c",
+				"background-color: 〔property〕"
+			],
+			[
+				"fu",
+				"fun	function …"
+			],
+			[
+				"imp",
+				"import〔keyword〕"
+			],
+			[
+				"di",
+				"display: 〔property〕"
+			],
+			[
+				"flexb",
+				"flex-basis"
+			],
+			[
+				"fle",
+				"flex-shrink"
+			],
+			[
+				"flex",
+				"flex"
+			],
+			[
+				"box",
+				"box-sizing"
+			],
+			[
+				"e",
+				"echo"
+			],
+			[
+				"print",
+				"print_r"
+			],
+			[
+				"t",
+				"this"
+			],
+			[
+				"fi",
+				"find〔function〕"
+			],
+			[
+				"dis",
+				"display"
+			],
+			[
+				"col",
+				"color"
+			],
+			[
+				"ba",
+				"background"
+			],
+			[
+				"lis",
+				"lis-n	list-style: none;"
+			],
+			[
+				"po",
+				"postData"
+			],
+			[
+				"typ",
+				"typeof〔keyword〕"
+			],
+			[
+				"ti",
+				"title"
+			],
+			[
+				"vi",
+				"video"
+			],
+			[
+				"vide",
+				"video"
+			],
+			[
+				"con",
+				"console"
+			],
+			[
+				"cha",
+				"chapterTitle"
+			],
+			[
+				"ch",
+				"chapterTitle"
+			],
+			[
+				"vid",
+				"videos"
+			],
+			[
+				"rg",
+				"right"
+			],
+			[
+				"trans",
+				"transition"
+			],
+			[
+				"im",
+				"important"
+			],
+			[
+				"l",
+				"left"
+			],
+			[
+				"has",
+				"hasClass〔function〕"
+			],
+			[
+				"add",
+				"addClass〔function〕"
+			],
+			[
+				"ro",
+				"removeClass〔function〕"
+			],
+			[
+				"r",
+				"right"
+			],
+			[
+				"tran",
+				"transition"
+			],
+			[
+				"rem",
+				"removeClass〔function〕"
+			],
+			[
+				"ad",
+				"addClass〔function〕"
+			],
+			[
+				"cl",
+				"click〔function〕"
+			],
+			[
+				"fun",
+				"function〔keyword〕"
+			],
+			[
+				"inl",
+				"inline-block"
+			],
+			[
+				"op",
+				"opacity"
+			],
+			[
+				"ret",
+				"return〔keyword〕"
+			],
+			[
+				"pri",
+				"private〔keyword〕"
+			],
+			[
+				"f",
+				"for	for (…) {…} (Improved Native For-Loop)"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 354.0,
+		"last_filter": "pci",
+		"selected_items":
+		[
+			[
+				"pci",
+				"Package Control: Install Package"
+			],
+			[
+				"wa",
+				"WakaTime: Open Dashboard"
+			],
+			[
+				"pcr",
+				"Package Control: Remove Package"
+			],
+			[
+				"pcl",
+				"Package Control: List Packages"
+			],
+			[
+				"pic",
+				"Package Control: Install Package"
+			],
+			[
+				"php",
+				"PHPUnit: Run"
+			],
+			[
+				"phpun",
+				"PHPUnit: Run"
+			],
+			[
+				"pcrp",
+				"Package Control: Remove Package"
+			],
+			[
+				"makecont",
+				"Laravel Artisan 5: Make:Controller"
+			],
+			[
+				"larave l arma",
+				"Laravel Artisan 5: Make:Auth"
+			],
+			[
+				"ssph",
+				"Set Syntax: PHP"
+			],
+			[
+				"ssj",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"LiveReload: Enable/disable plugins",
+				"LiveReload: Enable/disable plug-ins"
+			]
+		],
+		"width": 575.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/zhanglin/Nutstore/笔记/learning English.md",
+		"/Users/zhanglin/Desktop/Code/vPlayer/vplayer.html",
+		"/Users/zhanglin/Downloads/assets/index.html",
+		"/Users/zhanglin/Desktop/Code/vPlayer/js/vpalyer.js",
+		"/Users/zhanglin/Desktop/Code/vPlayer/css/cue.min.css",
+		"/Users/zhanglin/Downloads/assets/css/genericons.css",
+		"/Users/zhanglin/Downloads/assets/css/cue.min.css",
+		"/Users/zhanglin/Downloads/cue/templates/playlist.php",
+		"/Users/zhanglin/Downloads/cue/cue.php",
+		"/Users/zhanglin/Desktop/Code/vPlayer/api/pagesApi.php",
+		"/Users/zhanglin/Desktop/Code/vPlayer/api/MusicAPI.php",
+		"/Users/zhanglin/Desktop/Code/NECMusicApi/MusicAPI.php",
+		"/Users/zhanglin/Desktop/Code/NECMusicApi/searchApi.php",
+		"/Users/zhanglin/Desktop/Code/laravel-vue/app/Http/Controllers/NetEaseMusicController.php",
+		"/Users/zhanglin/Desktop/Code/vPlayer/api/searchApi.php",
+		"/Users/zhanglin/Desktop/Code/laravel-vue/resources/views/music/json.blade.php",
+		"/Users/zhanglin/Desktop/Code/laravel-vue/resources/views/app.blade.php",
+		"/Users/zhanglin/Desktop/Code/vPlayer/README.md",
+		"/Users/zhanglin/Desktop/Code/vPlayer/detailApi.php",
+		"/Users/zhanglin/Desktop/Code/NECMusicApi/index.php",
+		"/Users/zhanglin/Desktop/Code/NECMusicApi/detailApi.php",
+		"/Users/zhanglin/Desktop/Code/NECMusicApi/index.html",
+		"/Users/zhanglin/Desktop/Code/notes-app/readme.md",
+		"/Users/zhanglin/Desktop/Code/notes-app/.gitignore",
+		"/Users/zhanglin/Desktop/Code/notes-app/favicon.ico",
+		"/Users/zhanglin/Desktop/Code/docs-app/environment/valet.html",
+		"/Users/zhanglin/Desktop/Code/docs-app/environment/homestead.html",
+		"/Users/zhanglin/Desktop/Code/docs-app/environment/valet",
+		"/Users/zhanglin/Desktop/Code/docs-app/_includes/head.html",
+		"/Users/zhanglin/Desktop/Code/docs-app/css/app.scss",
+		"/Users/zhanglin/Desktop/Code/docs-app/_config.yml",
+		"/Users/zhanglin/Desktop/Code/docs-app/_layouts/default.html",
+		"/Users/zhanglin/Desktop/Code/docs-app/feed.xml",
+		"/Users/zhanglin/Desktop/Code/docs-app/favicon.ico",
+		"/Users/zhanglin/Desktop/Code/docs-app/pages/index.html",
+		"/Users/zhanglin/Desktop/Code/docs-app/_includes/browser-warning.html",
+		"/Users/zhanglin/Desktop/Code/docs-app/index.html",
+		"/Users/zhanglin/Desktop/Code/docs-app/_layouts/page.html",
+		"/Users/zhanglin/Desktop/Code/docs-app/_includes/footer.html",
+		"/Users/zhanglin/Desktop/Code/docs-app/_layouts/post.html",
+		"/Users/zhanglin/Desktop/Code/docs-app/demos/demo.html",
+		"/Users/zhanglin/Desktop/Code/light7-build/docs/_layouts/docs-demos.html",
+		"/Users/zhanglin/Desktop/Code/docs-app/_site/demos/demo.html",
+		"/Users/zhanglin/Desktop/Code/light7-build/docs/_layouts/home.html",
+		"/Users/zhanglin/Desktop/Code/light7-build/docs/_includes/_components/router.html",
+		"/Users/zhanglin/Desktop/Code/light7-build/docs/_includes/_components/actions.html",
+		"/Users/zhanglin/Desktop/Code/light7-build/docs/docs-demos/list.html",
+		"/Users/zhanglin/Desktop/Code/light7-build/docs/_layouts/demo.html",
+		"/Users/zhanglin/Desktop/Code/light7-build/docs/extends.html",
+		"/Users/zhanglin/Desktop/Code/light7-build/docs/template.html",
+		"/Users/zhanglin/Desktop/Code/light7-build/docs/index.html",
+		"/Users/zhanglin/Desktop/Code/light7-build/docs/examples/app-ios-mail/index.html",
+		"/Users/zhanglin/Desktop/Code/light7-build/docs/_data/ratchicons.yml",
+		"/Users/zhanglin/Desktop/Code/light7-build/docs/demos/list/check-list.html",
+		"/Users/zhanglin/Desktop/Code/light7-build/Gruntfile.js",
+		"/Users/zhanglin/Desktop/Code/light7-build/img/i-f7.png",
+		"/Users/zhanglin/Desktop/Code/light7-build/grunt/ratchicons-data-generator.js",
+		"/Users/zhanglin/Desktop/Code/light7-build/package.json",
+		"/Users/zhanglin/Desktop/Code/vue-github-users/src/components/Repos.vue",
+		"/Users/zhanglin/Desktop/Code/v2ex-app-vue/src/components/ItemView.vue",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/package.json",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/config/index.js",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/src/components/Item.vue",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/index.html",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/src/components/ItemView.vue",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/src/store/index.js",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/test/unit/karma.conf.js",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/test/unit/specs/Hello.spec.js",
+		"/Users/zhanglin/Desktop/Code/v2ex-app-vue/src/store/index.js",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/test/unit/index.js",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/test/e2e/runner.js",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/test/e2e/nightwatch.conf.js",
+		"/Users/zhanglin/Desktop/Code/v2ex-app-vue/package.json",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/src/components/Toolbar.vue",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/src/App.vue",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/webpack.config.js",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/dist/index.html",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/src/main.js",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/src/filter/index.js",
+		"/Users/zhanglin/Desktop/Code/v2ex-app-vue/src/components/App.vue",
+		"/Users/zhanglin/Desktop/Code/v2ex-app-vue/src/index.js",
+		"/Users/zhanglin/Desktop/Code/v2ex-app-vue/src/components/Item.vue",
+		"/Users/zhanglin/Desktop/Code/v2ex-app-vue/src/filter/index.js",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/src/components/Hello.vue",
+		"/Users/zhanglin/Desktop/Code/v2ex-app-vue/webpack.config.js",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/.editorconfig",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/.babelrc",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/config/dev.env.js",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/build/dev-server.js",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/build/build.js",
+		"/Users/zhanglin/Desktop/Code/axhello.github.io/index.html",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/src/components/Single.vue",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/.gitignore",
+		"/Users/zhanglin/Desktop/Code/HiApp/src/modules/home/home.tpl.html",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/api/latest.json",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/src/index.js",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/node_modules/framework7/examples/inline-pages/jade/index.jade",
+		"/Users/zhanglin/Desktop/Code/Framework7/index.html",
+		"/Users/zhanglin/Desktop/Code/HiApp/src/style/less/toolbar.less",
+		"/Users/zhanglin/Desktop/Code/HiApp/src/res/icons/ios/icon-40.png",
+		"/Users/zhanglin/Desktop/Code/HiApp/src/page/about.html",
+		"/Users/zhanglin/Desktop/Code/HiApp/src/api/user_login.json",
+		"/Users/zhanglin/Desktop/Code/HiApp/src/api/answers.json",
+		"/Users/zhanglin/Desktop/Code/HiApp/src/modules/about/about.js",
+		"/Users/zhanglin/Desktop/Code/HackerNews7/src/index.html",
+		"/Users/zhanglin/Desktop/Code/HackerNews7/package.json",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/src/components/Header.vue",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/node_modules/framework7/examples/template7-pages/index.html",
+		"/Users/zhanglin/Desktop/Code/v2ex-app/node_modules/framework7/examples/template7-pages/jade/projects.jade",
+		"/Users/zhanglin/Desktop/Code/vue-hackernews/src/store/index.js",
+		"/Users/zhanglin/Desktop/Code/vue-hackernews/src/components/Item.vue",
+		"/Users/zhanglin/Desktop/Code/vue-hackernews/src/variables.styl",
+		"/Users/zhanglin/Desktop/Code/vue-hackernews/src/components/App.vue",
+		"/Users/zhanglin/Desktop/Code/vue-hackernews/src/components/Comment.vue",
+		"/Users/zhanglin/Desktop/Code/vue-webpack/src/App.vue",
+		"/Users/zhanglin/Desktop/Demo/Canvas.html",
+		"/Users/zhanglin/Desktop/Demo/demo7.html",
+		"/Users/zhanglin/Desktop/Code/short-url/npm-debug.log",
+		"/Users/zhanglin/Desktop/Code/short-url/LICENSE",
+		"/Users/zhanglin/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/zhanglin/Desktop/Code/short-url/dump.rdb",
+		"/Users/zhanglin/Desktop/Code/laravel-pro/gulpfile.js",
+		"/Users/zhanglin/Desktop/命令片段勿删.conf",
+		"/Users/zhanglin/Downloads/member.html",
+		"/Users/zhanglin/Nutstore/证书/ciyuanai.net/ciyuanai_net_ECC/COMODOECCAddTrustCA.crt",
+		"/Users/zhanglin/Nutstore/证书/ciyuanai.net/ciyuanai_net_ECC/COMODOECCDomainValidationSecureServerCA.crt",
+		"/Users/zhanglin/Nutstore/证书/ciyuanai.net/ciyuanai_net_ECC/ciyuanai_net_ecc.crt",
+		"/Users/zhanglin/Nutstore/证书/ciyuanai.net/ciyuanai_net_ECC/ciyuanai_net.crt"
+	],
+	"find":
+	{
+		"height": 38.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"border-width:",
+			"border-width: 0 122px 0 144px;",
+			"    border-width: 0 122px 0 144px;",
+			".cue-skin-cuebar.mejs-container .mejs-controls",
+			">\n",
+			"span",
+			"i",
+			"span",
+			".cuebar-playlist",
+			".cuebar",
+			".cuebar .cue-tracks",
+			"<!-- 音乐播放器 -->",
+			"32",
+			"disabled",
+			"sider",
+			"color",
+			"25",
+			"utf-8",
+			"25",
+			".FM_Button",
+			"FM_list",
+			"FM_Right_List",
+			"1s",
+			"span",
+			"a",
+			"id",
+			"extension",
+			"zend",
+			"extension",
+			"zend_extension",
+			"extension",
+			"zend",
+			"zend_extension",
+			";zend_extension",
+			";zend_extension = \"/path/to/my/xdebug.so\"",
+			"http://pmapi.24k.hk/api/common",
+			"notice_cont",
+			".mod_tab .notice_cont table.syllabus tr.next",
+			"img_css",
+			"box-header",
+			"fl",
+			"title",
+			"pic",
+			"music.pic",
+			"this.music.pic",
+			"setMusic",
+			"\">\n",
+			"request",
+			"body"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 38.0
+	},
+	"input":
+	{
+		"height": 73.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 265.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "vpalyer.sublime-project",
+	"replace":
+	{
+		"height": 72.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"la",
+				"api/latest.json"
+			],
+			[
+				"lat",
+				"api/latest.json"
+			],
+			[
+				"index",
+				"src/index.js"
+			],
+			[
+				"usercont",
+				"app/Http/Controllers/UsersController.php"
+			],
+			[
+				"route",
+				"app/Http/routes.php"
+			],
+			[
+				"usercon",
+				"app/Http/Controllers/UserController.php"
+			],
+			[
+				"rou",
+				"app/Http/routes.php"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 354.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 1051.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 413.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
