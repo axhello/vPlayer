@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>vPlayer</title>
     <link rel="stylesheet" type="text/css" href="assets/css/view.css">
+    <script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
     <script src="assets/js/vue.min.js"></script>
     <script src="assets/js/vue-resource.min.js"></script>
 </head>
@@ -30,8 +31,49 @@
                         </header>
 	                    <div class="entry-content">
 	                        <p>Enjoy the song from the <em>NetEaseCloud</em> cloud!</p>
-	                        <p><a class="button" href="#">Let's Go</a></p>
+	                        <p><a class="button" href="#" @click="setFirstisit">Let's Go</a></p>
 	                    </div>
+                         <div class="form-table">
+                        <form action="" @submit.prevent>
+                            <div class="input-group">
+                                <input type="text" 
+                                        @keyup.enter="formSubmit" 
+                                        @blur="formSubmit" 
+                                        @change="formSubmit" 
+                                        class="form-control" 
+                                        name="search" 
+                                        placeholder="Search for..."
+                                        autocomplete="off"
+                                        v-model="search">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="bs-example" data-example-id="striped-table">
+                        <table class="table table-striped table-responsive">
+                            <thead v-show="isNext">
+                                <tr>
+                                    <th>#</th>
+                                    <th>歌曲名</th>
+                                    <th>歌手</th>
+                                    <th>专辑</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="list in songLists" @click="playMusic(list.id)">
+                                    <td><i class="is-playable"></i></td>
+                                    <td>{{ list.name }}</td>
+                                    <td>{{ list.artists[0].name }}{{'/'+list.artists[1].name}}{{ '/'+ list.artists[2].name}}</td>
+                                    <td>《{{ list.album.name }}》</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <nav style=" margin-bottom: 5em;">
+                            <ul class="pager">
+                                <li v-show="next"><a href="#" @click.pervent="previousPage()">上一页</a></li>
+                                <li v-show="isNext"><a href="#" @click.pervent="nextPage">下一页</a></li>
+                            </ul>
+                        </nav>
+                    </div>
                     </article>
                 </main>
             </div><!-- #content -->
@@ -50,7 +92,7 @@
                 <div class="volume-bar">
                     <div class="volume-bar-current"></div>
                 </div>
-                <div class="progress-bar">
+                <div class="progress-bar" @click="clickProgress">
                     <div class="play-bar" style="width: {{progress}}%;"></div>
                 </div>
                 <div class="times">
@@ -59,88 +101,30 @@
                 </div>
                 <div class="volume-panel">
                     <button class="volume-toggle" :class="{'is-muted': isMuted}" @click="setMtuted">Mute</button>
-                    <input v-model="range" @change="setVolume" type="range" min="0" max="1" step=0.1>
+                    <input v-model="range" @change="setVolume" type="range" min="0" max="1" step=0.1 value="0.5">
                 </div>
             </div>
             <div class="playlist">
-                <ol class="tracks-list">
-                    <li class="track is-current is-playing">
+                 <ol class="tracks-list">
+<!--                     <li class="track"
+                        v-if="historyLists.length != 0"
+                        :class="{'is-current': currentIndex == $index }"
+                        v-for="paly in historyLists" @click="playHistoryList(paly.id,$index)">
                         <span class="track-status track-cell"></span>
                         <span class="track-details track-cell">
-						<span class="track-title">Into My Own</span>
-                        <span class="track-artist">KNOBLE</span>
+                        <span class="track-title">{{ paly.title }}</span>
+                        <span class="track-artist">{{ paly.artists }}</span>
                         </span>
                         <span class="track-actions track-cell"></span>
                         <span class="track-length track-cell"></span>
-                    </li>
-                    <li class="track">
+                    </li> -->
+                    <li class="track" v-for="paly in playingLists"
+                        :class="{'is-current': currentIndex == $index, 'is-playing': currentIndex == $index && isPlay}"
+                        @click="playHistoryList(paly.id,$index)">
                         <span class="track-status track-cell"></span>
                         <span class="track-details track-cell">
-						<span class="track-title">The Burial of the Dead</span>
-                        <span class="track-artist">KNOBLE</span>
-                        </span>
-                        <span class="track-actions track-cell"></span>
-                        <span class="track-length track-cell"></span>
-                    </li>
-                    <li class="track">
-                        <span class="track-status track-cell"></span>
-                        <span class="track-details track-cell">
-						<span class="track-title">What the Thunder Said</span>
-                        <span class="track-artist">KNOBLE</span>
-                        </span>
-                        <span class="track-actions track-cell"></span>
-                        <span class="track-length track-cell"></span>
-                    </li>
-                    <li class="track">
-                        <span class="track-status track-cell"></span>
-                        <span class="track-details track-cell">
-						<span class="track-title">The Man, The Rabbit, and The Buffalo</span>
-                        <span class="track-artist">KNOBLE</span>
-                        </span>
-                        <span class="track-actions track-cell"></span>
-                        <span class="track-length track-cell"></span>
-                    </li>
-                    <li class="track">
-                        <span class="track-status track-cell"></span>
-                        <span class="track-details track-cell">
-						<span class="track-title">Seven Days In Winter</span>
-                        <span class="track-artist">KNOBLE</span>
-                        </span>
-                        <span class="track-actions track-cell"></span>
-                        <span class="track-length track-cell"></span>
-                    </li>
-                    <li class="track">
-                        <span class="track-status track-cell"></span>
-                        <span class="track-details track-cell">
-						<span class="track-title">Keeper of the Winds</span>
-                        <span class="track-artist">KNOBLE</span>
-                        </span>
-                        <span class="track-actions track-cell"></span>
-                        <span class="track-length track-cell"></span>
-                    </li>
-                    <li class="track">
-                        <span class="track-status track-cell"></span>
-                        <span class="track-details track-cell">
-						<span class="track-title">Piccadilly Circus</span>
-                        <span class="track-artist">KNOBLE</span>
-                        </span>
-                        <span class="track-actions track-cell"></span>
-                        <span class="track-length track-cell"></span>
-                    </li>
-                    <li class="track">
-                        <span class="track-status track-cell"></span>
-                        <span class="track-details track-cell">
-						<span class="track-title">The Wounded King</span>
-                        <span class="track-artist">KNOBLE</span>
-                        </span>
-                        <span class="track-actions track-cell"></span>
-                        <span class="track-length track-cell"></span>
-                    </li>
-                    <li class="track">
-                        <span class="track-status track-cell"></span>
-                        <span class="track-details track-cell">
-						<span class="track-title">The Wounded King</span>
-                        <span class="track-artist">KNOBLE</span>
+                        <span class="track-title">{{ paly.title }}</span>
+                        <span class="track-artist">{{ paly.artists }}</span>
                         </span>
                         <span class="track-actions track-cell"></span>
                         <span class="track-length track-cell"></span>
@@ -150,9 +134,9 @@
         </div>
     </div>
     <div class="site-current-track-details">
-		<span class="title">{{playingTitle}}</span>
+		<span class="title">{{ playingTitle }}</span>
 		-
-		<span class="artist">{{ playingArtist[0].name}}{{'/'+playingArtist[1].name}}{{'/'+playingArtist[2].name}}</span>
+		<span class="artist">{{ playingArtist }}</span>
 		<div class="times">
 			<span class="current-time">{{ showCurrentTime }}</span>
 			/

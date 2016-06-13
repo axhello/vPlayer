@@ -610,13 +610,16 @@ th {
 td {
 	font-weight: 400;
 }
+tr {
+	cursor: pointer;
+}
 
 th,
 td {
-	border: solid #dedede;
-	border-width: 0 0 1px;
-	padding: 0.66666667em 0;
-	text-align: left;
+	padding: 10px;
+    line-height: 1.5;
+    border-bottom: 1px solid #ddd;
+	/*text-align: left;*/
 }
 
 thead {
@@ -627,7 +630,7 @@ thead {
 }
 
 thead th {
-	padding: 0.53846154em 0;
+	padding: 0.53846154em .5em;
 }
 
 fieldset {
@@ -1619,6 +1622,7 @@ img.aligncenter {
 	margin-bottom: 0;
 	max-width: 100%;
 	padding-bottom: 0;
+	text-align: center;
 }
 
 .page-template-landing .entry-content {
@@ -1635,7 +1639,7 @@ img.aligncenter {
 		display: flex;
 		flex-direction: row;
 		width: 100%;
-
+		justify-content: center;
 		-webkit-box-direction: normal;
 		-moz-box-direction: normal;
 		-webkit-box-orient: horizontal;
@@ -1645,16 +1649,17 @@ img.aligncenter {
 		-webkit-flex-wrap: wrap;
 		-ms-flex-wrap: wrap;
 		flex-wrap: wrap;
+		-webkit-transition: all 2s linear;
+		-o-transition: all 2s linear;
+		transition: all 2s linear;
 	}
-
-	.page-template-landing .hentry {
+.page-template-landing .hentry {
 		display: -webkit-box;
 		display: -webkit-flex;
 		display: -moz-box;
 		display: -ms-flexbox;
 		display: flex;
 		max-width: 100%;
-		padding-bottom: 60px;
 		text-align: center;
 		width: 100%;
 
@@ -3966,7 +3971,7 @@ a:focus {
 	text-transform: none;
 	vertical-align: top;
 	vertical-align: middle;
-
+	margin-left: -5px;
 	speak: none;
 }
 
@@ -4515,7 +4520,7 @@ body.rtl {
 	}
 
 	.page-template-landing .hentry {
-		min-height: calc(100vh - 60px);
+		min-height: calc(100vh - 165px);
 	}
 
 	.site-header .panel-body-footer {
@@ -4583,6 +4588,40 @@ input[type=range]:focus {
 input[type=range]:focus::-webkit-slider-runnable-track {
     background: #ccc;
 }
+.form-table {
+	margin: 2em auto;
+}
+.input-group {
+	width: 330px;
+}
+.table .is-playable:before {
+    content: "\f152";
+    cursor: pointer;
+    display: inline-block;
+    font-family: "themicons";
+    font-size: 16px;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-style: normal;
+}
+
+/* 必需 */
+.expand-transition {
+  transition: all .3s ease;
+  height: 30px;
+  padding: 10px;
+  background-color: #eee;
+  overflow: hidden;
+}
+
+/* .expand-enter 定义进入的开始状态 */
+/* .expand-leave 定义离开的结束状态 */
+.expand-enter, .expand-leave {
+  height: 0;
+  padding: 0 10px;
+  opacity: 0;
+}
+
 
 /* IE10+ */
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
