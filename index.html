@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>vPlayer</title>
-    <link rel="stylesheet" type="text/css" href="assets/css/view.css">
-    <script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="assets/css/vplayer.css">
     <script src="assets/js/vue.min.js"></script>
     <script src="assets/js/vue-resource.min.js"></script>
 </head>
@@ -17,38 +16,42 @@
             <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
             <header id="masthead" class="site-header" style="background-image: url({{picUrl}});">
                 <div class="site-branding">
-                    <h1 class="site-title">
-                    	<a href="#" rel="home">vPlayer</a>
-                    	</h1>
-                    <div class="site-description">Just another vPlayer Demo site</div>
+                    <h2 class="site-title">
+                        <!-- <a href="#" rel="home">vPlayer</a> -->
+                    	<!-- <a href="#" rel="home">{{ playingTitle }}</a> -->
+                    </h2>
+                    <!-- <div class="site-description">Just another vPlayer Demo site</div> -->
+                    <div v-text="lyricText" class="site-description"></div>
+                    <!-- <div class="site-description">{{ playingArtist }}</div> -->
                 </div>
             </header>
             <div id="content" class="site-content">
                 <main id="primary" class="content-area">
                     <article id="post" class="post page type-page status-publish hentry">
-                        <header class="entry-header">
-                            <h1 class="entry-title">New Song!</h1> 
-                        </header>
-	                    <div class="entry-content">
-	                        <p>Enjoy the song from the <em>NetEaseCloud</em> cloud!</p>
-	                        <p><a class="button" href="#" @click="setFirstisit">Let's Go</a></p>
-	                    </div>
-                         <div class="form-table">
+                       <div :class="{'expand': goSearch}">
+                            <header class="entry-header">
+                                <h1 class="entry-title">New Song!</h1> 
+                            </header>
+                        <div class="entry-content">
+                            <p>Enjoy the song from the <em>NetEaseCloud</em> cloud!</p>
+                            <p><a class="button" href="#" @click="gotoSearch">Let's Go</a></p>
+                        </div>
+                       </div>
+                    <div class="form-table" :class="{'insearch': goSearch}">
                         <form action="" @submit.prevent>
                             <div class="input-group">
-                                <input type="text" 
-                                        @keyup.enter="formSubmit" 
-                                        @blur="formSubmit" 
-                                        @change="formSubmit" 
-                                        class="form-control" 
-                                        name="search" 
-                                        placeholder="Search for..."
-                                        autocomplete="off"
-                                        v-model="search">
+                                <input 
+                                    type="text" 
+                                    @keyup.enter="formSubmit"
+                                    class="form-control" 
+                                    name="search" 
+                                    placeholder="Search for..."
+                                    autocomplete="off"
+                                    v-model="search">
                             </div>
                         </form>
                     </div>
-                    <div class="bs-example" data-example-id="striped-table">
+                    <div class="bs-example" data-example-id="striped-table" :class="{'insearch': goSearch}">
                         <table class="table table-striped table-responsive">
                             <thead v-show="isNext">
                                 <tr>
@@ -67,10 +70,10 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <nav style=" margin-bottom: 5em;">
+                        <nav style=" margin-bottom: 3em;">
                             <ul class="pager">
-                                <li v-show="next"><a href="#" @click.pervent="previousPage()">上一页</a></li>
-                                <li v-show="isNext"><a href="#" @click.pervent="nextPage">下一页</a></li>
+                                <li v-show="pages != 0"><a href="#" @click="prevPage">上一页</a></li>
+                                <li v-show="isNext"><a href="#" @click="nextPage">下一页</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -84,10 +87,10 @@
     <div id="site-player-panel" class="site-player-panel">
         <div class="site-player tracks-count-8 is-shuffling is-playing">
             <div class="controls">
-                <button class="previous">Previous Track</button>
+                <button class="previous" @click="prevPlay">Previous Track</button>
                 <button class="play-pause" @click="setPlay" :class="[ isPlay ? 'pause' : 'play']">Pause</button>
-                <button class="next">Next Track</button>
-                <button class="repeat" title="Repeat">Repeat</button>
+                <button class="next" @click="nextPlay">Next Track</button>
+                <button class="repeat" title="Repeat" @click="setLoop">Repeat</button>
                 <button class="shuffle is-active" title="Disable Shuffle">Disable Shuffle</button>
                 <div class="volume-bar">
                     <div class="volume-bar-current"></div>
@@ -106,18 +109,6 @@
             </div>
             <div class="playlist">
                  <ol class="tracks-list">
-<!--                     <li class="track"
-                        v-if="historyLists.length != 0"
-                        :class="{'is-current': currentIndex == $index }"
-                        v-for="paly in historyLists" @click="playHistoryList(paly.id,$index)">
-                        <span class="track-status track-cell"></span>
-                        <span class="track-details track-cell">
-                        <span class="track-title">{{ paly.title }}</span>
-                        <span class="track-artist">{{ paly.artists }}</span>
-                        </span>
-                        <span class="track-actions track-cell"></span>
-                        <span class="track-length track-cell"></span>
-                    </li> -->
                     <li class="track" v-for="paly in playingLists"
                         :class="{'is-current': currentIndex == $index, 'is-playing': currentIndex == $index && isPlay}"
                         @click="playHistoryList(paly.id,$index)">

@@ -12,12 +12,15 @@ var vm = new Vue({
             showCurrentTime: '0:00',
             showDurationTime: '0:00',
             currentIndex: 0,
+            nextIndex: 0,
+            prevIndex: 0,
             index: 0,
             search: '',
+            lyricText: '',
+            lyric: [],
             songLists: [],
-            historyLists: [],
             playingLists: [],
-            pagenumber: 1,
+            pageNumber: 1,
             pages: 0,
             offset: 30,
             next: false,
@@ -26,18 +29,24 @@ var vm = new Vue({
             listOpen: false,
             isMuted: false,
             isPlay: false,
+            goSearch: false,
         }
     },
     ready: function() {
         this.audio.volume = 0.5;
         setInterval(this.setProgress, 500);
+        this.audio.addEventListener("timeupdate", this.updateLyric);
         this.audio.addEventListener("ended", this.autoNextPlay);
-        if (this.storage.getItem('listObject') === null) { 
-            this.storage.setItem('listObject', '[]'); 
+        if (this.storage.getItem('listObject') === null) {
+            this.storage.setItem('listObject', '[]');
         }
-         this.playingLists = JSON.parse(this.storage.getItem('listObject'));
+        this.playingLists = JSON.parse(this.storage.getItem('listObject'));
     },
     methods: {
+        gotoSearch: function() {
+            this.goSearch = true;
+            document.querySelector('input[name="search"]').focus();
+        },
         setAutoPlay: function() {
             this.audio.autoplay = !this.audio.autoplay;
             alert(this.audio.autoplay);
@@ -46,9 +55,12 @@ var vm = new Vue({
             this.audio.currentTime = 0;
         },
         setPlay: function() {
-            this.audio.play();
             this.isPlay = !this.isPlay
-            if (!this.isPlay) { this.audio.pause() }
+            if (this.audio.paused) { 
+                this.audio.play();
+            } else {
+                this.audio.pause();
+            }
         },
         setMtuted: function() {
             this.audio.muted = !this.audio.muted;
@@ -86,6 +98,7 @@ var vm = new Vue({
             this.progress = value.toFixed(3);
         },
         formSubmit: function() {
+            this.goSearch = true;
             if (this.search == '') {
                 return false;
             }
@@ -100,22 +113,28 @@ var vm = new Vue({
         },
         playMusic: function(id) {
             this.isPlay = true;
+            this.getSongLyric(id);
             this.$http.get('api/detailApi.php', {
                 'id': id
             }).then(function(data) {
                 var result = data.data.songs[0];
-                var id = result.id, 
-                title = result.name, 
-                url = result.mp3Url, 
-                picUrl = result.album.picUrl, 
-                artists;
+                var id = result.id,
+                    title = result.name,
+                    url = result.mp3Url,
+                    picUrl = result.album.picUrl,
+                    artists;
                 if (result.artists.length === 1) {
                     artists = result.artists[0].name;
-                } else if(result.artists.length === 2) {
-                    artists = result.artists[0].name +'/'+ result.artists[1].name
+                } else if (result.artists.length === 2) {
+                    artists = result.artists[0].name + '/' + result.artists[1].name
                 } else if (result.artists.length === 3) {
-                    artists = result.artists[0].name +'/'+ result.artists[1].name + '/'+ result.artists[2].name;
+                    artists = result.artists[0].name + '/' + result.artists[1].name + '/' + result.artists[2].name;
                 };
+                this.playingTitle = title;
+                this.playingArtist = artists;
+                this.picUrl = picUrl;
+                this.audio.src = url;
+                this.audio.play();
                 var mdata = {
                     'id': id,
                     'title': title,
@@ -123,11 +142,6 @@ var vm = new Vue({
                     'picUrl': picUrl,
                     'artists': artists
                 };
-                this.playingTitle = title;
-                this.playingArtist = artists;
-                this.picUrl = picUrl;
-                this.audio.src = url;
-                this.audio.play();
                 var obj = JSON.parse(this.storage.getItem('listObject'));
                 if (obj === null) {
                     this.playingLists.push(mdata);
@@ -146,7 +160,7 @@ var vm = new Vue({
                         this.playingLists.push(mdata);
                         this.storage.setItem('listObject', JSON.stringify(this.playingLists));
                     } else {
-                        alert('歌曲已经存在歌单');
+                        console.log('歌曲已经存在歌单中');
                     };
                 }
             }, function(response) {
@@ -155,6 +169,7 @@ var vm = new Vue({
         },
         playHistoryList: function(id, index) {
             this.isPlay = false;
+            this.getSongLyric(id);
             this.$http.get('api/detailApi.php', {
                 'id': id
             }).then(function(data) {
@@ -164,10 +179,10 @@ var vm = new Vue({
                 var artists;
                 if (music.artists.length === 1) {
                     artists = music.artists[0].name;
-                } else if(music.artists.length === 2) {
-                    artists = music.artists[0].name +'/'+ music.artists[1].name
+                } else if (music.artists.length === 2) {
+                    artists = music.artists[0].name + '/' + music.artists[1].name
                 } else if (music.artists.length === 3) {
-                    artists = music.artists[0].name +'/'+ music.artists[1].name + '/'+ music.artists[2].name;
+                    artists = music.artists[0].name + '/' + music.artists[1].name + '/' + music.artists[2].name;
                 };
                 this.playingTitle = music.name;
                 this.playingArtist = artists;
@@ -176,10 +191,56 @@ var vm = new Vue({
             }, function(response) {
                 // error callback
             });
+
         },
-        previousPage: function() {
+        getSongLyric: function(id) {
+            this.$http.get('api/lyricApi.php', {
+                'id': id
+            }).then(function(data) {
+                var lrc = data.data;
+                if (lrc.nolyric) {
+                    this.lyricText = '纯音乐 无歌词';
+                    this.lyric = [];
+                    return false;
+                } else if (!lrc.qfy && !lrc.sfy) {
+                    this.parseLyric(lrc.lrc.lyric);
+                }
+            }, function(response) {
+                // error callback
+            });
+        },
+        parseLyric: function(text) {
+            var lyric = text.split('\n'),//先按行分割
+                pattern = /\[(\d{2}):(\d{2})\.(\d{2,3})]/g,
+                result = [];
+            while (!pattern.test(lyric[0])) {    
+                lyric = lyric.slice(1);
+            };
+            lyric[lyric.length - 1].length === 0 && lyric.pop();
+            lyric.forEach(function(v, i, a) {
+                var time = v.match(pattern),
+                    value = v.replace(pattern, '');
+                time.forEach(function(v1, i1, a1) {
+                    var t = v1.slice(1, -1).split(':');
+                    result.push([parseInt(t[0], 10) * 60 + parseFloat(t[1]), value]);
+                });
+            });
+            result.sort(function(a, b) {
+                return a[0] - b[0];
+            });
+            this.lyric = result;
+            // console.log(result);
+        },
+        updateLyric: function() {
+            for (var i = 0, l = this.lyric.length; i < l; i++) {
+                if (this.audio.currentTime > this.lyric[i][0]) {
+                    this.lyricText = this.lyric[i][1];
+                };
+            };
+        },
+        prevPage: function() {
             this.pages = this.pages - this.offset;
-            this.pagenumber--;
+            this.pageNumber--;
             this.$http.get('api/pagesApi.php', {
                 's': this.search,
                 'p': this.pages
@@ -191,7 +252,7 @@ var vm = new Vue({
         },
         nextPage: function() {
             this.next = true;
-            p = this.pagenumber++;
+            p = this.pageNumber++;
             this.pages = p * this.offset;
             this.$http.get('api/pagesApi.php', {
                 's': this.search,
@@ -201,6 +262,30 @@ var vm = new Vue({
             }, function(response) {
                 // error callback
             });
+        },
+        nextPlay: function() {
+            this.isPlay = false;
+            this.nextIndex = ++this.currentIndex;
+            var obj = JSON.parse(this.storage.getItem('listObject'));
+            this.audio.pause();
+            this.audio.src = obj[this.nextIndex].url;
+            this.audio.load();
+            this.playingTitle = obj[this.nextIndex].title;
+            this.playingArtist = obj[this.nextIndex].artists;
+            this.picUrl = obj[this.nextIndex].picUrl;
+            setTimeout(this.setPlay, 2000);
+        },
+        prevPlay: function() {
+            this.isPlay = false;
+            this.prevIndex = --this.currentIndex;
+            var obj = JSON.parse(this.storage.getItem('listObject'));
+            this.audio.pause();
+            this.audio.src = obj[this.prevIndex].url;
+            this.audio.load();
+            this.playingTitle = obj[this.prevIndex].title;
+            this.playingArtist = obj[this.prevIndex].artists;
+            this.picUrl = obj[this.prevIndex].picUrl;
+            setTimeout(this.setPlay, 2000);
         },
         autoNextPlay: function() {
             this.isPlay = false;
