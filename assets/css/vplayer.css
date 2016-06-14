@@ -4607,9 +4607,9 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 
 /* 必需 */
 .expand {
-  	transition: all .3s ease;
-  	opacity: 0.5;
+  	opacity: 0;
 	margin-top: -18em;
+  	transition: all .3s ease;
 }
 .insearch {
  	transition: all .3s ease;

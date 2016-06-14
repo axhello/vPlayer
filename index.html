@@ -111,14 +111,14 @@
                  <ol class="tracks-list">
                     <li class="track" v-for="paly in playingLists"
                         :class="{'is-current': currentIndex == $index, 'is-playing': currentIndex == $index && isPlay}"
-                        @click="playHistoryList(paly.id,$index)">
+                        >
                         <span class="track-status track-cell"></span>
-                        <span class="track-details track-cell">
-                        <span class="track-title">{{ paly.title }}</span>
-                        <span class="track-artist">{{ paly.artists }}</span>
+                        <span class="track-details track-cell" @click="playHistoryList(paly.id,$index)">
+                            <span class="track-title">{{ paly.title }}</span>
+                            <span class="track-artist">{{ paly.artists }}</span>
                         </span>
                         <span class="track-actions track-cell"></span>
-                        <span class="track-length track-cell"></span>
+                        <span @click="removeList($index)" class="track-length track-cell">X</span>
                     </li>
                 </ol>
             </div>
