@@ -3,6 +3,7 @@ var vm = new Vue({
     data: function() {
         return {
             audio: document.getElementsByTagName('audio')[0],
+            lyricContainer: document.getElementById('lyricContainer'),
             storage: window.localStorage,
             range: 0,
             progress: 0,
@@ -198,7 +199,6 @@ var vm = new Vue({
                 'id': id
             }).then(function(data) {
                 var lrc = data.data;
-                console.log(lrc);
                 if (lrc.nolyric === true) {
                     this.lyricText = '纯音乐 无歌词';
                     this.lyric = [];
@@ -206,7 +206,8 @@ var vm = new Vue({
                 }
                 if (!lrc.qfy && !lrc.sfy) {
                     this.lyricText = '';
-                    this.parseLyric(lrc.lrc.lyric);
+                    var lyrics = this.parseLyric(lrc.lrc.lyric);
+                    this.appendLyric(lyrics);
                 }
             }, function(response) {
                 // error callback
@@ -216,6 +217,7 @@ var vm = new Vue({
             var lyric = text.split('\n'), //先按行分割
                 pattern = /\[(\d{2}):(\d{2})\.(\d{2,3})]/g,
                 result = [];
+            var offset = this.getOffset(text);
             while (!pattern.test(lyric[0])) {
                 lyric = lyric.slice(1);
             };
@@ -225,23 +227,60 @@ var vm = new Vue({
                     value = v.replace(pattern, '');
                 time.forEach(function(v1, i1, a1) {
                     var t = v1.slice(1, -1).split(':');
-                    result.push([parseInt(t[0], 10) * 60 + parseFloat(t[1]), value]);
+                    result.push([parseInt(t[0], 10) * 60 + parseFloat(t[1]) + parseInt(offset) / 1000, value]);
                 });
             });
             result.sort(function(a, b) {
                 return a[0] - b[0];
             });
-            this.lyric = result;
+            // this.lyric = result;
+            return result;
             // console.log(result);
         },
         updateLyric: function() {
-            if (this.lyric.length != 0) {
+            // if (this.lyric.length != 0) {
+            //     for (var i = 0, l = this.lyric.length; i < l; i++) {
+            //         if (this.audio.currentTime > this.lyric[i][0]) {
+            //             this.lyricText = this.lyric[i][1];
+            //         };
+            //     };
+            // };
             for (var i = 0, l = this.lyric.length; i < l; i++) {
-                if (this.audio.currentTime > this.lyric[i][0]) {
-                    this.lyricText = this.lyric[i][1];
+                if (this.audio.currentTime > this.lyric[i][0] - 0.50) {
+                    var line = document.getElementById('line-' + i),
+                        prevLine = document.getElementById('line-' + (i > 0 ? i - 1 : i));
+                    prevLine.className = '';
+                    console.log(line.offsetTop);
+                    line.className = 'current-line';
+                    this.lyricContainer.style.top = 130 - line.offsetTop + 'px';
                 };
             };
+        },
+        appendLyric: function(lyric) {
+            var lyricContainer = this.lyricContainer,
+                fragment = document.createDocumentFragment();
+            //clear the lyric container first
+            lyricContainer.innerHTML = '';
+            lyric.forEach(function(v, i, a) {
+                var line = document.createElement('p');
+                line.id = 'line-' + i;
+                line.textContent = v[1];
+                fragment.appendChild(line);
+            });
+            lyricContainer.appendChild(fragment);
+            this.lyric = lyric;
+        },
+        getOffset: function(text) {
+            var offset = 0;
+            try {
+                var offsetPattern = /\[offset:\-?\+?\d+\]/g,
+                    offset_line = text.match(offsetPattern)[0],
+                    offset_str = offset_line.split(':')[1];
+                offset = parseInt(offset_str);
+            } catch (err) {
+                offset = 0;
             }
+            return offset;
         },
         prevPage: function() {
             this.pages = this.pages - this.offset;
