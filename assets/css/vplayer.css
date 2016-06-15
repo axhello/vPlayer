@@ -4625,7 +4625,7 @@ ul li {
     height: 270px;
     overflow: hidden;
     position: relative;
-    top: -120px;
+    top: -95px;
     color: #fff;
 }
 #lyricContainer {
@@ -4646,6 +4646,10 @@ ul li {
 #lyricContainer .current-line {
 	color: #fff;
     font-size: 16px;
+}
+.lyric-description {
+	position: relative;
+	top: 15em;
 }
 
 

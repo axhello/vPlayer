@@ -189,7 +189,7 @@ var vm = new Vue({
                 this.playingTitle = music.name;
                 this.playingArtist = artists;
                 this.picUrl = music.album.picUrl;
-                
+
             }, function(response) {
                 // error callback
             });
@@ -200,6 +200,10 @@ var vm = new Vue({
             }).then(function(data) {
                 var lrc = data.data;
                 if (lrc.nolyric === true) {
+                    var div = this.lyricContainer;
+                    while(div.hasChildNodes()){
+                        div.removeChild(div.firstChild);
+                    }
                     this.lyricText = '纯音乐 无歌词';
                     this.lyric = [];
                     return false;
@@ -233,28 +237,20 @@ var vm = new Vue({
             result.sort(function(a, b) {
                 return a[0] - b[0];
             });
-            // this.lyric = result;
             return result;
-            // console.log(result);
         },
         updateLyric: function() {
-            // if (this.lyric.length != 0) {
-            //     for (var i = 0, l = this.lyric.length; i < l; i++) {
-            //         if (this.audio.currentTime > this.lyric[i][0]) {
-            //             this.lyricText = this.lyric[i][1];
-            //         };
-            //     };
-            // };
-            for (var i = 0, l = this.lyric.length; i < l; i++) {
-                if (this.audio.currentTime > this.lyric[i][0] - 0.50) {
-                    var line = document.getElementById('line-' + i),
-                        prevLine = document.getElementById('line-' + (i > 0 ? i - 1 : i));
-                    prevLine.className = '';
-                    console.log(line.offsetTop);
-                    line.className = 'current-line';
-                    this.lyricContainer.style.top = 130 - line.offsetTop + 'px';
+            if (this.lyric.length != 0) {
+                for (var i = 0, l = this.lyric.length; i < l; i++) {
+                    if (this.audio.currentTime > this.lyric[i][0] - 0.50) {
+                        var line = document.getElementById('line-' + i),
+                            prevLine = document.getElementById('line-' + (i > 0 ? i - 1 : i));
+                        prevLine.className = '';
+                        line.className = 'current-line';
+                        this.lyricContainer.style.top = 130 - line.offsetTop + 'px';
+                    };
                 };
-            };
+            }
         },
         appendLyric: function(lyric) {
             var lyricContainer = this.lyricContainer,
@@ -333,6 +329,7 @@ var vm = new Vue({
         },
         autoNextPlay: function() {
             this.isPlay = false;
+            this.lyricContainer.style.top = 130 + 'px';
             var obj = JSON.parse(this.storage.getItem('listObject'));
             this.index = ++this.currentIndex;
             if (this.index == obj.length) {
@@ -352,7 +349,7 @@ var vm = new Vue({
         },
         removeList: function(index) {
             var lists = JSON.parse(this.storage.getItem('listObject'));
-            var changeList = lists.slice(0, index).concat(lists.slice(parseInt(index, 10) + 1)); 
+            var changeList = lists.slice(0, index).concat(lists.slice(parseInt(index, 10) + 1));
             this.storage.setItem('listObject', JSON.stringify(changeList));
             alert('歌曲已从播放历史歌单中删除！请刷新...');
         },
