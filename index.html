@@ -11,10 +11,10 @@
 
 <body class="home page page-template-landing">
     <div id="viewport-pane">
-    	<audio src="http://m2.music.126.net/_KADwB6cWxOYG2SEgxZXEQ==/3286440264124875.mp3"></audio>
+    	<audio></audio>
         <div id="page" class="hfeed site">
             <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
-            <header id="masthead" class="site-header" style="background-image: url({{picUrl}});">
+            <header id="masthead" class="site-header" :style="{ backgroundImage: 'url('+picUrl+')' }">
                 <div id="lyricWrapper" class="site-branding">
                     <div v-show="lyric.length != 0" id="lyricContainer"></div>
                     <!-- <h2 class="site-title"> -->
@@ -49,7 +49,7 @@
                             </div>
                         </form>
                     </div>
-                    <div class="bs-example" data-example-id="striped-table" :class="{'insearch': goSearch}">
+                    <div class="bs-example" :class="{'insearch': goSearch}">
                         <table class="table table-striped table-responsive">
                             <thead v-show="isNext">
                                 <tr>
@@ -86,13 +86,11 @@
         <div class="site-player tracks-count-8 is-shuffling is-playing">
             <div class="controls">
                 <button class="previous" @click="prevPlay">Previous Track</button>
-                <button class="play-pause" @click="setPlay" :class="[ isPlay ? 'pause' : 'play']">Pause</button>
+                <button class="play-pause" @click="setPlay" 
+                :class="[ isPlay ? 'pause' : 'play']">Pause</button>
                 <button class="next" @click="nextPlay">Next Track</button>
                 <button class="repeat" title="Repeat" @click="setLoop">Repeat</button>
                 <button class="shuffle is-active" title="Disable Shuffle">Disable Shuffle</button>
-                <div class="volume-bar">
-                    <div class="volume-bar-current"></div>
-                </div>
                 <div class="progress-bar" @click="clickProgress">
                     <div class="play-bar" style="width: {{progress}}%;"></div>
                 </div>

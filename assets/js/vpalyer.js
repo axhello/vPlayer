@@ -78,7 +78,6 @@ var vm = new Vue({
                 this.audio.pause();
                 this.isPlay = false;
             }
-            console.log(this.isPlay);
         },
         setMtuted: function() {
             this.audio.muted = !this.audio.muted;
@@ -267,6 +266,10 @@ var vm = new Vue({
                     this.lyricText = '纯音乐 无歌词';
                     this.lyric = [];
                     return false;
+                } else if (lrc.uncollected === true) {
+                    this.lyricText = '未收录歌词';
+                    this.lyric = [];
+                    return false;
                 }
                 if (!lrc.qfy && !lrc.sfy) {
                     this.lyricText = '';
@@ -369,14 +372,9 @@ var vm = new Vue({
             this.playingLists = tempList;
             console.log('歌曲已从播放历史歌单中删除!');
         },
-        clickProgress: function(event) {
-            var target = event.target;
-            console.log(target.clientWidth);
-            console.log(target.offsetWidth);
-            // setInterval(function() {
-            //     drag.style.left = (audio.currentTime / audio.duration) * (window.innerWidth - 30) + "px";
-            //     speed.style.left = -((window.innerWidth) - (audio.currentTime / audio.duration) * (window.innerWidth - 30)) + "px";
-            // }, 500);
+        clickProgress: function(e) {
+            var percent = e.offsetX / e.target.offsetWidth;
+            this.audio.currentTime =  percent * this.audio.duration ;
         }
     }
 })
