@@ -4622,19 +4622,20 @@ ul li {
 	margin-left: 1em;
 }
 #lyricWrapper {
-    height: 270px;
+    height: 230px;
     overflow: hidden;
     position: relative;
-    top: -95px;
+    top: -20px;
     color: #fff;
 }
 #lyricContainer {
     position: relative;
-    top: 130px;
+    top: 99px;
     font-family: Arial, Helvetica, sans-serif;
     text-shadow: 1px 0 0 #000, -1px 0 0 #000, 0 1px 0 #000, 0 -1px 0 #000;
 }
 #lyricContainer p {
+	margin: 1em auto;
 	color: #989898;
 	word-wrap: break-word;
     text-align: center;
@@ -4649,7 +4650,7 @@ ul li {
 }
 .lyric-description {
 	position: relative;
-	top: 15em;
+	top: 7em;
 }
 
 
