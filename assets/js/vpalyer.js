@@ -1,8 +1,8 @@
-var vm = new Vue({
-    el: 'html',
+new Vue({
+    el: 'body',
     data: function() {
         return {
-            audio: document.getElementsByTagName('audio')[0],
+            audio: document.createElement('audio'),
             lyricContainer: document.getElementById('lyricContainer'),
             storage: window.localStorage,
             range: 0,
@@ -67,9 +67,6 @@ var vm = new Vue({
             this.audio.autoplay = !this.audio.autoplay;
             alert(this.audio.autoplay);
         },
-        rePlayed: function() {
-            this.audio.currentTime = 0;
-        },
         setPlay: function() {
             if (this.audio.paused) {
                 this.audio.play();
@@ -99,17 +96,16 @@ var vm = new Vue({
             this.listOpen = !this.listOpen
         },
         setProgress: function() {
-            var currentTime = this.audio.currentTime;
+            var MM, SS, CT, DT,
+            currentTime = this.audio.currentTime,
+            duration = this.audio.duration;
             MM = parseInt(currentTime / 60);
             SS = parseInt(currentTime % 60);
-            var CT = MM + ':' + (SS < 10 ? '0' + SS : SS);
-            this.showCurrentTime = CT;
+            this.showCurrentTime = CT = MM + ':' + (SS < 10 ? '0' + SS : SS);
 
-            var duration = this.audio.duration;
             MM = parseInt(duration / 60);
             SS = parseInt(duration % 60);
-            var DT = MM + ':' + (SS < 10 ? '0' + SS : SS);
-            this.showDurationTime = DT;
+            this.showDurationTime = DT = MM + ':' + (SS < 10 ? '0' + SS : SS);
 
             var value = currentTime / duration * 100;
             this.progress = value.toFixed(3);
@@ -196,7 +192,7 @@ var vm = new Vue({
                 var artists, music = data.data.songs[0];
                 this.audio.src = music.mp3Url;
                 setTimeout(this.setPlay, 1500);
-                if (!this.audio.paused) {this.isPlay = true;}
+                if (!this.audio.paused) {this.isPlay = true}
                 if (music.artists.length === 1) {
                     artists = music.artists[0].name;
                 } else if (music.artists.length === 2) {
@@ -222,7 +218,7 @@ var vm = new Vue({
             this.playingArtist = obj[this.nextIndex].artists;
             this.picUrl = obj[this.nextIndex].picUrl;
             setTimeout(this.setPlay, 2000);
-            if (!this.audio.paused) {this.isPlay = true;}
+            if (!this.audio.paused) {this.isPlay = true}
         },
         prevPlay: function() {
             this.prevIndex = --this.currentIndex;
@@ -235,7 +231,7 @@ var vm = new Vue({
             this.playingArtist = obj[this.prevIndex].artists;
             this.picUrl = obj[this.prevIndex].picUrl;
             setTimeout(this.setPlay, 2000);
-            if (!this.audio.paused) {this.isPlay = true;}
+            if (!this.audio.paused) {this.isPlay = true}
         },
         autoNextPlay: function() {
             this.lyricContainer.style.top = 110 + 'px';
@@ -255,7 +251,7 @@ var vm = new Vue({
                 this.picUrl = obj[this.index].picUrl;
                 setTimeout(this.setPlay, 2000);
             }
-            if (!this.audio.paused) {this.isPlay = true;}
+            if (!this.audio.paused) {this.isPlay = true}
         },
         getSongLyric: function(id) {
             this.$http.get('api/lyricApi.php', {
@@ -283,8 +279,8 @@ var vm = new Vue({
         parseLyric: function(text) {
             var lyric = text.split('\n'), //先按行分割
                 pattern = /\[(\d{2}):(\d{2})\.(\d{2,3})]/g,
-                result = [];
-            var offset = this.getOffset(text);
+                result = [],
+                offset = this.getOffset(text);
             while (!pattern.test(lyric[0])) {
                 lyric = lyric.slice(1);
             };
@@ -300,7 +296,7 @@ var vm = new Vue({
             result.sort(function(a, b) {
                 return a[0] - b[0];
             });
-            this.lyric = result;
+            this.lyric = result; //赋值给data里面的lyric用于做歌词偏移
             return result;
         },
         updateLyric: function() {

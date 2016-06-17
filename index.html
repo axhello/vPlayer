@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" :class="{'site-player-is-open':listOpen}">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -9,17 +9,12 @@
     <script src="assets/js/vue-resource.min.js"></script>
 </head>
 
-<body class="home page page-template-landing">
+<body class="home page page-template-landing" :class="{'site-player-is-open':listOpen}">
     <div id="viewport-pane">
-    	<audio></audio>
         <div id="page" class="hfeed site">
-            <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
             <header id="masthead" class="site-header" :style="{ backgroundImage: 'url('+picUrl+')' }">
                 <div id="lyricWrapper" class="site-branding">
                     <div v-show="lyric.length != 0" id="lyricContainer"></div>
-                    <!-- <h2 class="site-title"> -->
-                        <!-- <a href="#" rel="home">vPlayer</a> -->
-                    <!-- </h2> -->
                     <div v-text="lyricText" class="lyric-description"></div>
                 </div>
             </header>
