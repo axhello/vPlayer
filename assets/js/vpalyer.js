@@ -31,6 +31,7 @@ new Vue({
             isMuted: false,
             isPlay: false,
             goSearch: false,
+            isMove: false,
         }
     },
     ready: function() {
@@ -41,8 +42,8 @@ new Vue({
     },
     methods: {
         firstOrCreate: function() {
-           if (this.storage.getItem('listObject') === null) {
-            var tmp = {
+            if (this.storage.getItem('listObject') === null) {
+                var tmp = {
                     'id': 1,
                     'title': 'Hero',
                     'url': 'http://m2.music.126.net/_KADwB6cWxOYG2SEgxZXEQ==/3286440264124875.mp3',
@@ -97,8 +98,8 @@ new Vue({
         },
         setProgress: function() {
             var MM, SS, CT, DT,
-            currentTime = this.audio.currentTime,
-            duration = this.audio.duration;
+                currentTime = this.audio.currentTime,
+                duration = this.audio.duration;
             MM = parseInt(currentTime / 60);
             SS = parseInt(currentTime % 60);
             this.showCurrentTime = CT = MM + ':' + (SS < 10 ? '0' + SS : SS);
@@ -148,7 +149,7 @@ new Vue({
                 this.picUrl = picUrl;
                 this.audio.src = url;
                 this.audio.play();
-                if (!this.audio.paused) {this.isPlay = true;}
+                if (!this.audio.paused) { this.isPlay = true; }
                 var mdata = {
                     'id': id,
                     'title': title,
@@ -192,7 +193,7 @@ new Vue({
                 var artists, music = data.data.songs[0];
                 this.audio.src = music.mp3Url;
                 setTimeout(this.setPlay, 1500);
-                if (!this.audio.paused) {this.isPlay = true}
+                if (!this.audio.paused) { this.isPlay = true }
                 if (music.artists.length === 1) {
                     artists = music.artists[0].name;
                 } else if (music.artists.length === 2) {
@@ -218,7 +219,7 @@ new Vue({
             this.playingArtist = obj[this.nextIndex].artists;
             this.picUrl = obj[this.nextIndex].picUrl;
             setTimeout(this.setPlay, 2000);
-            if (!this.audio.paused) {this.isPlay = true}
+            if (!this.audio.paused) { this.isPlay = true }
         },
         prevPlay: function() {
             this.prevIndex = --this.currentIndex;
@@ -231,7 +232,7 @@ new Vue({
             this.playingArtist = obj[this.prevIndex].artists;
             this.picUrl = obj[this.prevIndex].picUrl;
             setTimeout(this.setPlay, 2000);
-            if (!this.audio.paused) {this.isPlay = true}
+            if (!this.audio.paused) { this.isPlay = true }
         },
         autoNextPlay: function() {
             this.lyricContainer.style.top = 110 + 'px';
@@ -251,7 +252,7 @@ new Vue({
                 this.picUrl = obj[this.index].picUrl;
                 setTimeout(this.setPlay, 2000);
             }
-            if (!this.audio.paused) {this.isPlay = true}
+            if (!this.audio.paused) { this.isPlay = true }
         },
         getSongLyric: function(id) {
             this.$http.get('api/lyricApi.php', {
@@ -269,8 +270,7 @@ new Vue({
                 }
                 if (!lrc.qfy && !lrc.sfy) {
                     this.lyricText = '';
-                    var lyrics = this.parseLyric(lrc.lrc.lyric);
-                    this.appendLyric(lyrics);
+                    this.parseLyric(lrc.lrc.lyric);
                 }
             }, function(response) {
                 // error callback
@@ -297,7 +297,6 @@ new Vue({
                 return a[0] - b[0];
             });
             this.lyric = result; //赋值给data里面的lyric用于做歌词偏移
-            return result;
         },
         updateLyric: function() {
             if (this.lyric.length === 0 || '') return false;
@@ -310,18 +309,6 @@ new Vue({
                     this.lyricContainer.style.top = 110 - line.offsetTop + 'px';
                 };
             };
-        },
-        appendLyric: function(lyric) {
-            var lyricContainer = this.lyricContainer,
-                fragment = document.createDocumentFragment();
-            lyricContainer.innerHTML = '';
-            lyric.forEach(function(v, i, a) {
-                var line = document.createElement('p');
-                line.id = 'line-' + i;
-                line.textContent = v[1];
-                fragment.appendChild(line);
-            });
-            lyricContainer.appendChild(fragment);
         },
         getOffset: function(text) {
             var offset = 0;
@@ -362,15 +349,16 @@ new Vue({
         },
         removeList: function(index) {
             var lists = JSON.parse(this.storage.getItem('listObject')),
-            changeList = lists.slice(0, index).concat(lists.slice(parseInt(index, 10) + 1));
+                changeList = lists.slice(0, index).concat(lists.slice(parseInt(index, 10) + 1));
             this.storage.setItem('listObject', JSON.stringify(changeList));
             var tempList = JSON.parse(this.storage.getItem('listObject'));
             this.playingLists = tempList;
             console.log('歌曲已从播放历史歌单中删除!');
         },
         clickProgress: function(e) {
+            console.log(e.offsetX);
             var percent = e.offsetX / e.target.offsetWidth;
-            this.audio.currentTime =  percent * this.audio.duration ;
-        }
+            this.audio.currentTime = percent * this.audio.duration;
+        },
     }
 })

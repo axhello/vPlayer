@@ -12,9 +12,12 @@
 <body class="home page page-template-landing" :class="{'site-player-is-open':listOpen}">
     <div id="viewport-pane">
         <div id="page" class="hfeed site">
-            <header id="masthead" class="site-header" :style="{ backgroundImage: 'url('+picUrl+')' }">
+            <header id="masthead" class="site-header" 
+                    :style="{ backgroundImage: 'url('+picUrl+')' }">
                 <div id="lyricWrapper" class="site-branding">
-                    <div v-show="lyric.length != 0" id="lyricContainer"></div>
+                    <div v-show="lyric.length != 0" id="lyricContainer">
+                        <p id="line-{{$index}}" v-for="lrc in lyric">{{lrc[1]}}</p>
+                    </div>
                     <div v-text="lyricText" class="lyric-description"></div>
                 </div>
             </header>
@@ -87,7 +90,8 @@
                 <button class="repeat" title="Repeat" @click="setLoop">Repeat</button>
                 <button class="shuffle is-active" title="Disable Shuffle">Disable Shuffle</button>
                 <div class="progress-bar" @click="clickProgress">
-                    <div class="play-bar" style="width: {{progress}}%;"></div>
+                    <div class="play-bar" :style="{ width: progress+'%'}"></div>
+                     <div class="play-point"></div>
                 </div>
                 <div class="times">
                     <span class="current-time">{{ showCurrentTime }}</span> /
@@ -101,8 +105,7 @@
             <div class="playlist">
                  <ol class="tracks-list">
                     <li class="track" v-for="paly in playingLists"
-                        :class="{'is-current': currentIndex == $index, 'is-playing': currentIndex == $index && isPlay}"
-                        >
+                        :class="{'is-current is-playing': currentIndex == $index && isPlay}">
                         <span class="track-status track-cell"></span>
                         <span class="track-details track-cell" @click="playHistoryList(paly.id,$index)">
                             <span class="track-title">{{ paly.title }}</span>
