@@ -19,8 +19,14 @@ class MusicAPI
     public function search($s=null, $limit=30, $offset=0)
     {
         $url = 'http://music.163.com/api/search/get';
-        $data = 's='.$s.'&limit='.$limit.'&type=1&offset='.$offset.'';
-        return $this->restAPI($url, $data);
+        // $data = 's='.$s.'&limit='.$limit.'&type=1&offset='.$offset.'';
+        $params = [
+            's' => $s,
+            'limit' => $limit,
+            'type' => 1,
+            'offset' => $offset
+        ];
+        return $this->restAPI($url, $params);
     }
 
     /**
@@ -32,8 +38,12 @@ class MusicAPI
     public function detail($song_id)
     {
         $url = 'http://music.163.com/api/song/detail';
-        $data = 'id='.$song_id.'&ids=%5B'.$song_id.'%5D';
-        return $this->restAPI($url, $data);
+        // $data = 'id='.$song_id.'&ids=%5B'..$song_id.']'.'%5D';
+        $params = [
+            'id' => $song_id,
+            'ids' => '['.$song_id.']'
+        ];
+        return $this->restAPI($url, $params);
     }
 
     /**
@@ -59,8 +69,14 @@ class MusicAPI
     public function lyric($song_id)
     {
         $url = 'http://music.163.com/api/song/lyric';
-        $data = 'os=pc&id='.$song_id.'&lv=-1&kv=-1&tv=-1';
-        return $this->restAPI($url, $data);
+        $params = [
+            'os' => 'pc',
+            'id' => $song_id,
+            'lv' => -1,
+            'kv' => -1,
+            'tv' => -1
+        ];
+        return $this->restAPI($url, $params);
     }
 
     /**
@@ -69,16 +85,26 @@ class MusicAPI
      *
      * @return mixed
      */
-    protected function restAPI($url, $data)
+    protected function restAPI($url, $params)
     {
+        $headers = array(
+            'Accept: */*',
+            'Accept-Encoding: gzip,deflate,sdch',
+            'Accept-Language: zh-CN,zh;q=0.8,gl;q=0.6,zh-TW;q=0.4',
+            'Connection: keep-alive',
+            'Content-Type: application/x-www-form-urlencoded',
+            'Host: music.163.com',
+            'Referer: http://music.163.com/search/',
+            'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36'
+        );
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($params));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curl, CURLOPT_ENCODING, "application/json");
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
-        curl_setopt($curl, CURLOPT_REFERER, 'http://music.163.com/');
-        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36');
         $result = curl_exec($curl);
         curl_close($curl);
         return $result;

@@ -116,7 +116,7 @@ new Vue({
             if (this.search == '') {
                 return false;
             }
-            this.$http.get('api/searchApi.php', {
+            this.$http.get('api/search.php', {
                 's': this.search
             }).then(function(data) {
                 this.songLists = data.data.result.songs;
@@ -128,7 +128,7 @@ new Vue({
         playMusic: function(id) {
             this.lyricContainer.style.top = 110 + 'px';
             this.getSongLyric(id);
-            this.$http.get('api/detailApi.php', {
+            this.$http.get('api/detail.php', {
                 'id': id
             }).then(function(data) {
                 var result = data.data.songs[0];
@@ -137,6 +137,7 @@ new Vue({
                     url = result.mp3Url,
                     picUrl = result.album.picUrl,
                     artists;
+                if (url === null) { console.log('歌曲链接不存在了'); return false}
                 if (result.artists.length === 1) {
                     artists = result.artists[0].name;
                 } else if (result.artists.length === 2) {
@@ -181,13 +182,14 @@ new Vue({
                 }
             }, function(response) {
                 // error callback
+                console.log(response);
             });
         },
         playHistoryList: function(id, index) {
             this.lyricContainer.style.top = 110 + 'px';
             this.currentIndex = index;
             this.getSongLyric(id);
-            this.$http.get('api/detailApi.php', {
+            this.$http.get('api/detail.php', {
                 'id': id
             }).then(function(data) {
                 var artists, music = data.data.songs[0];
@@ -206,6 +208,7 @@ new Vue({
                 this.picUrl = music.album.picUrl;
             }, function(response) {
                 // error callback
+                console.log(response);
             });
         },
         nextPlay: function() {
@@ -255,7 +258,7 @@ new Vue({
             if (!this.audio.paused) { this.isPlay = true }
         },
         getSongLyric: function(id) {
-            this.$http.get('api/lyricApi.php', {
+            this.$http.get('api/lyric.php', {
                 'id': id
             }).then(function(data) {
                 var lrc = data.data;
@@ -274,6 +277,7 @@ new Vue({
                 }
             }, function(response) {
                 // error callback
+                console.log(response);
             });
         },
         parseLyric: function(text) {
@@ -325,20 +329,21 @@ new Vue({
         prevPage: function() {
             this.pages = this.pages - this.offset;
             this.pageNumber--;
-            this.$http.get('api/pagesApi.php', {
+            this.$http.get('api/pages.php', {
                 's': this.search,
                 'p': this.pages
             }).then(function(data) {
                 this.songLists = data.data.result.songs;
             }, function(response) {
                 // error callback
+                console.log(response);
             });
         },
         nextPage: function() {
             this.next = true;
             p = this.pageNumber++;
             this.pages = p * this.offset;
-            this.$http.get('api/pagesApi.php', {
+            this.$http.get('api/pages.php', {
                 's': this.search,
                 'p': this.pages
             }).then(function(data) {
