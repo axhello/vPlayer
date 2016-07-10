@@ -38,7 +38,6 @@ class MusicAPI
     public function detail($song_id)
     {
         $url = 'http://music.163.com/api/song/detail';
-        // $data = 'id='.$song_id.'&ids=%5B'..$song_id.']'.'%5D';
         $params = [
             'id' => $song_id,
             'ids' => '['.$song_id.']'

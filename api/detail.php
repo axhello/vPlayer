@@ -6,6 +6,6 @@ $api = new MusicAPI();
 
 $id = $_GET['id'];
 if (!empty($id)) {
-	$detail = $api->detail($id);
-	print_r($detail);
+    $detail = $api->detail($id);
+    print_r($detail);
 }
