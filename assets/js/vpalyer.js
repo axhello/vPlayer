@@ -132,12 +132,12 @@ new Vue({
                 'id': id
             }).then(function(data) {
                 var result = data.data.songs[0];
+                if (result.mp3Url === null) { console.log('歌曲链接不存在了'); return false}
                 var id = result.id,
                     title = result.name,
                     url = result.mp3Url,
                     picUrl = result.album.picUrl,
                     artists;
-                if (url === null) { console.log('歌曲链接不存在了'); return false}
                 if (result.artists.length === 1) {
                     artists = result.artists[0].name;
                 } else if (result.artists.length === 2) {
