@@ -4592,7 +4592,7 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 	margin: 4em auto;
 }
 .input-group {
-	width: 330px;
+	width: 100%;
 }
 .table .is-playable:before {
     content: "\f152";

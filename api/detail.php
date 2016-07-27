@@ -1,6 +1,6 @@
 <?php 
 
-require dirname(__FILE__) . '/MusicAPI.php';
+require dirname(__FILE__) . '/v2/MusicAPI.php';
 
 $api = new MusicAPI();
 
