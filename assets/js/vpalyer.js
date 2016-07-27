@@ -144,7 +144,7 @@ new Vue({
             this.lyricContainer.style.top = 110 + 'px';
             this.getMp3Url(id);
             this.getSongLyric(id);
-            if (!this.audio.paused) {this.isPlay = true}
+            this.isPlay = true;
             this.$http.get('api/detail.php', {
                 'id': id
             }).then(function(data) {
