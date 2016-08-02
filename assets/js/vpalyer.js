@@ -39,7 +39,7 @@ new Vue({
     },
     methods: {
         firstOrCreate: function() {
-            if (this.storage.getItem('playerList') === null || []) {
+            if (this.storage.getItem('playerList') === null) {
                 var tmp = {
                     'id': 407002919,
                     'title': 'Hero',
