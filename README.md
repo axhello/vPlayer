@@ -4,4 +4,4 @@
 
 已更新使用网易云新版API，国外ip使用会被屏蔽，请注意！
 
-LiveDemo: http://skyling.me/vPlayer/
+LiveDemo: http://player.ciyuanai.net
