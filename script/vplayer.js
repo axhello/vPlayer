@@ -29,6 +29,7 @@ new Vue({
             goSearch: false,
             isMove: false,
             isSearch: false,
+            isNull: false,
         }
     },
     ready: function() {
@@ -54,12 +55,12 @@ new Vue({
             this.playingTitle = this.playingLists[0].title;
             this.playingArtist = this.playingLists[0].artists;
             this.picUrl = this.playingLists[0].picUrl;
-            this.$http.get('api/mp3url.php',{
+            this.$http.get('api/mp3url.php', {
                 'id': this.playingLists[0].id
-            }).then(function(response){
+            }).then(function(response) {
                 var mp3 = response.data.data[0];
                 this.audio.src = mp3.url;
-            }, function(error){console.log(error)});
+            }, function(error) { console.log(error) });
         },
         gotoSearch: function() {
             this.goSearch = true;
@@ -81,14 +82,17 @@ new Vue({
         getMp3Url: function(id) {
             this.$http.get('api/mp3url.php', {
                 'id': id
-            }).then(function(response){
+            }).then(function(response) {
                 var mp3 = response.data.data[0];
                 if (mp3.code === 404) {
-                    alert('无法播放，歌曲被“和谐”了'); return false;
+                    alert('无法播放，歌曲被“和谐”了');
+                    this.isNull = true;
+                } else {
+                    this.isNull = false;
+                    this.audio.src = mp3.url;
+                    this.audio.play();
                 }
-                this.audio.src = mp3.url;
-                this.audio.play();
-            }, function(error){
+            }, function(error) {
                 console.log(error)
             });
         },
@@ -149,7 +153,10 @@ new Vue({
                 'id': id
             }).then(function(data) {
                 var result = data.data.songs[0];
-                var id = result.id, title = result.name, picUrl = result.al.picUrl, artists;
+                var id = result.id,
+                    title = result.name,
+                    picUrl = result.al.picUrl,
+                    artists;
                 if (result.ar.length === 1) {
                     artists = result.ar[0].name;
                 } else if (result.ar.length === 2) {
@@ -157,37 +164,40 @@ new Vue({
                 } else if (result.ar.length === 3) {
                     artists = result.ar[0].name + '/' + result.ar[1].name + '/' + result.ar[2].name;
                 };
-                this.playingTitle = title;
-                this.playingArtist = artists;
-                this.picUrl = picUrl;
-                var tempData = {
-                    'id': id,
-                    'title': title,
-                    'picUrl': picUrl,
-                    'artists': artists
-                };
-                var obj = JSON.parse(this.storage.getItem('playerList'));
-                this.currentIndex = obj.length;
-                if (obj === null) {
-                    this.playingLists.push(tempData);
-                    this.storage.setItem('playerList', JSON.stringify(this.playingLists));
-                } else {
-                    for (var i = 0; i < obj.length; i++) {
-                        if (tempData.id == obj[i].id) {
-                            this.lock = true;
-                            break;
-                        } else {
-                            this.lock = false;
+                if (!this.isNull) {
+                    this.playingTitle = title;
+                    this.playingArtist = artists;
+                    this.picUrl = picUrl;
+                    var tempData = {
+                        'id': id,
+                        'title': title,
+                        'picUrl': picUrl,
+                        'artists': artists
+                    };
+                    var obj = JSON.parse(this.storage.getItem('playerList'));
+                    this.currentIndex = obj.length;
+                    if (obj === null) {
+                        this.playingLists.push(tempData);
+                        this.storage.setItem('playerList', JSON.stringify(this.playingLists));
+                    } else {
+                        for (var i = 0; i < obj.length; i++) {
+                            if (tempData.id == obj[i].id) {
+                                this.lock = true;
+                                break;
+                            } else {
+                                this.lock = false;
+                            }
                         }
-                    }
-                };
-                if (this.lock == false) {
-                    this.playingLists = obj;
-                    this.playingLists.push(tempData);
-                    this.storage.setItem('playerList', JSON.stringify(this.playingLists));
-                } else {
-                    alert('歌曲已经存在歌单中'); return false;
-                };
+                    };
+                    if (this.lock == false) {
+                        this.playingLists = obj;
+                        this.playingLists.push(tempData);
+                        this.storage.setItem('playerList', JSON.stringify(this.playingLists));
+                    } else {
+                        alert('歌曲已经存在歌单中');
+                        return false;
+                    };
+                }
             }, function(response) {console.log(response)});
         },
         playHistoryList: function(id, index) {
@@ -218,7 +228,8 @@ new Vue({
         prevPlay: function() {
             var prev = JSON.parse(this.storage.getItem('playerList'));
             if (this.currentIndex == 0) {
-                alert('这已经是第一首了'); return false;
+                alert('这已经是第一首了');
+                return false;
             } else {
                 this.currentIndex = --this.currentIndex;
             }
@@ -323,7 +334,7 @@ new Vue({
                 'p': this.pages
             }).then(function(data) {
                 this.songLists = data.data.result.songs;
-            }, function(response) {console.log(response)});
+            }, function(response) { console.log(response) });
         },
         nextPage: function() {
             p = this.pageNumber++;

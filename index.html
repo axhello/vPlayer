@@ -5,8 +5,6 @@
     <meta charset="UTF-8">
     <title>vPlayer</title>
     <link rel="stylesheet" type="text/css" href="assets/css/vplayer.css">
-    <script src="assets/js/vue.min.js"></script>
-    <script src="assets/js/vue-resource.min.js"></script>
 </head>
 
 <body class="home page page-template-landing" :class="{'site-player-is-open':listOpen}">
@@ -130,7 +128,7 @@
 	</div>
 	<button class="site-play-pause-button"
 	:class="[ isPlay ? 'pause' : 'play']" @click="setPlay">Pause</button>
-    <script src="assets/js/vplayer.js"></script>
+    <script src="dist/app.js"></script>
 </body>
 
 </html>

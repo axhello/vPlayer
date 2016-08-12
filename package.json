@@ -1,0 +1,26 @@
+{
+  "name": "vPlayer",
+  "version": "1.0.0",
+  "description": "用vuejs写的播放器，API基于网易云, 具体效果请查看Demo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/axhello/vPlayer.git"
+  },
+  "keywords": [],
+  "author": "Axhello",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/axhello/vPlayer/issues"
+  },
+  "homepage": "https://github.com/axhello/vPlayer#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.0.0"
+  }
+}
