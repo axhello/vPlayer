@@ -2,122 +2,134 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <title>vPlayer</title>
-  <link rel="stylesheet" type="text/css" href="assets/css/vplayer.css">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="vuejs,播放器,网易云api"/>
+    <meta name="description" content="用vuejs+网易云api写的一款在线播放器">
+    <meta name="author" content="vPlayer">
+    <title>vPlayer</title>
+    <link rel="stylesheet" type="text/css" href="assets/css/vplayer.css">
 </head>
 
 <body class="home page page-template-landing" :class="{'site-player-is-open':listOpen}">
-  <div id="viewport-pane">
-    <div id="page" class="hfeed site">
-      <header id="masthead" class="site-header" :style="{ backgroundImage: 'url('+picUrl+')' }">
-        <div id="lyricWrapper" class="site-branding">
-          <div v-show="lyric.length != 0" id="lyricContainer">
-            <p id="line-{{$index}}" v-for="lrc in lyric">{{lrc[1]}}</p>
-          </div>
-          <div v-text="lyricText" class="lyric-description"></div>
-        </div>
-      </header>
-      <div id="content" class="site-content">
-        <main id="primary" class="content-area">
-          <article id="post" class="post page type-page status-publish hentry">
-            <div :class="{'expand': goSearch}">
-              <header class="entry-header">
-                <h1 class="entry-title">New Song!</h1>
-              </header>
-              <div class="entry-content">
-                <p>Enjoy the song from the <em>NetEaseCloud</em> cloud!</p>
-                <p><a class="button" href="#" @click="gotoSearch">Let's Go</a></p>
-              </div>
-            </div>
-            <div class="form-table" :class="{'insearch': goSearch}">
-              <form action="" @submit.prevent>
-                <div class="input-group">
-                  <input type="text" @keyup.enter="formSubmit" class="form-control" name="search" placeholder="Search for..." autocomplete="off" v-model="search">
+    <div id="viewport-panel">
+        <div id="page" class="hfeed site">
+            <header class="site-header" :style="{ backgroundImage: 'url('+picUrl+')' }">
+                <div id="lyricWrapper" class="site-branding">
+                    <div v-show="lyric.length != 0" id="lyricContainer">
+                        <p id="line-{{$index}}" v-for="lrc in lyric">{{lrc[1]}}</p>
+                    </div>
+                    <div v-text="lyricText" class="lyric-description"></div>
                 </div>
-              </form>
+            </header>
+            <div id="content" class="site-content">
+                <main id="primary" class="content-area">
+                    <div id="post" class="post page type-page status-publish hentry">
+                        <div class="entry">
+                            <div class="entry-header">
+                                <h1 class="entry-title">New Song!</h1>
+                            </div>
+                            <div class="entry-content">
+                                <p class="content">Enjoy the song from the NetEaseCloud!</p>
+                                <p class="btn" :class="{'expand': goSearch}">
+                                  <a class="button" href="#" @click="gotoSearch">Let's Go</a>
+                                </p>
+                            </div>
+                            <div class="form-table" :class="{'insearch': goSearch}">
+                                <form action="" @submit.prevent>
+                                    <div class="input-group">
+                                        <input type="text" 
+                                        @keyup.enter="formSubmit"
+                                        @blur="formSubmit"
+                                        class="form-control" 
+                                        name="search" 
+                                        placeholder="试试输入“Tobu”"
+                                        autocomplete="off" 
+                                        v-model="search">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="table-example" :class="{'insearch': goSearch}">
+                            <table class="table is-striped">
+                                <thead v-show="isSearch">
+                                    <tr>
+                                        <th class="jin">#</th>
+                                        <th>歌曲名</th>
+                                        <th>歌手</th>
+                                        <th>专辑</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="list in songLists" @click="playMusic(list.id)">
+                                        <td><i class="is-playable"></i></td>
+                                        <td>{{ list.name }}</td>
+                                        <td>{{list.ar[0].name}}{{'/'+list.ar[1].name}}{{'/'+list.ar[2].name}}</td>
+                                        <td>《{{ list.al.name }}》</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <nav style=" margin-bottom: 3em;">
+                                <ul class="pager">
+                                    <li v-show="pages != 0"><a href="#" @click="prevPage">上一页</a></li>
+                                    <li v-show="isSearch"><a href="#" @click="nextPage">下一页</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </main>
             </div>
-            <div class="bs-example" :class="{'insearch': goSearch}">
-              <table class="table table-striped table-responsive">
-                <thead v-show="isSearch">
-                  <tr>
-                    <th>#</th>
-                    <th>歌曲名</th>
-                    <th>歌手</th>
-                    <th>专辑</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="list in songLists" @click="playMusic(list.id)">
-                    <td><i class="is-playable"></i></td>
-                    <td>{{ list.name }}</td>
-                    <td>{{list.ar[0].name}}{{'/'+list.ar[1].name}}{{'/'+list.ar[2].name}}</td>
-                    <td>《{{ list.al.name }}》</td>
-                  </tr>
-                </tbody>
-              </table>
-              <nav style=" margin-bottom: 3em;">
-                <ul class="pager">
-                  <li v-show="pages != 0"><a href="#" @click="prevPage">上一页</a></li>
-                  <li v-show="isSearch"><a href="#" @click="nextPage">下一页</a></li>
-                </ul>
-              </nav>
-            </div>
-          </article>
-        </main>
-      </div>
-      <!-- #content -->
-    </div>
-    <!-- #page -->
-  </div>
-  <!-- #viewport -->
-  <button id="site-player-toggle" class="site-player-toggle" :class="{'is-open':listOpen}" @click="isListOpen">Toggle Player</button>
-  <div id="site-player-panel" class="site-player-panel">
-    <div class="site-player tracks-count-8 is-shuffling is-playing">
-      <div class="controls">
-        <button class="previous" @click="prevPlay" title="Previous">Previous Track</button>
-        <button class="play-pause" @click="setPlay" :class="[ isPlay ? 'pause' : 'play']">Pause</button>
-        <button class="next" @click="nextPlay" title="Next">Next Track</button>
-        <button class="repeat" title="Repeat" @click="setLoop">Repeat</button>
-        <button class="shuffle is-active" title="Disable Shuffle">Disable Shuffle</button>
-        <div class="progress-bar" @click="clickProgress">
-          <div class="play-bar" :style="{ width: progress+'%'}"></div>
-          <div class="play-point"></div>
         </div>
+    </div>
+    <!-- #viewport -->
+    <button id="site-player-toggle" class="site-player-toggle" :class="{'is-open':listOpen}" @click="isListOpen">Toggle Player</button>
+    <div id="site-player-panel" class="site-player-panel">
+        <div class="site-player tracks-count-8 is-shuffling is-playing">
+            <div class="controls">
+                <button class="previous" @click="prevPlay" title="Previous">Previous Track</button>
+                <button class="play-pause" @click="setPlay" :class="[ isPlay ? 'pause' : 'play']">Pause</button>
+                <button class="next" @click="nextPlay" title="Next">Next Track</button>
+                <button class="repeat" title="Repeat" @click="setLoop">Repeat</button>
+                <button class="shuffle is-active" title="Disable Shuffle">Disable Shuffle</button>
+                <div class="progress-bar" @click="clickProgress">
+                    <div class="play-bar" :style="{ width: progress+'%'}"></div>
+                    <div class="play-point"></div>
+                </div>
+                <div class="times">
+                    <span class="current-time">{{ showCurrentTime }}</span> /
+                    <span class="duration">{{ showDurationTime }}</span>
+                </div>
+                <div class="volume-panel">
+                    <button class="volume-toggle" :class="{'is-muted': isMuted}" @click="setMtuted">Mute</button>
+                    <input v-model="range" @change="setVolume" type="range" min="0" max="1" step=0.1 value="0.5">
+                </div>
+            </div>
+            <div class="playlist">
+                <ol class="tracks-list">
+                    <li class="track" v-for="paly in playingLists" :class="{'is-current is-playing': currentIndex == $index && isPlay}">
+                        <span class="track-status track-cell"></span>
+                        <span class="track-details track-cell" @click="playHistoryList(paly.id, $index)">
+                        <span class="track-title">{{ paly.title }}</span>
+                        <span class="track-artist">{{ paly.artists }}</span>
+                        </span>
+                        <span class="track-actions track-cell"></span>
+                        <span @click="removeList($index)" class="track-length track-cell">X</span>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="site-current-track-details">
+        <span class="title">{{ playingTitle }}</span> -
+        <span class="artist">{{ playingArtist }}</span>
         <div class="times">
-          <span class="current-time">{{ showCurrentTime }}</span> /
-          <span class="duration">{{ showDurationTime }}</span>
+            <span class="current-time">{{ showCurrentTime }}</span> /
+            <span class="duration">{{ showDurationTime }}</span>
         </div>
-        <div class="volume-panel">
-          <button class="volume-toggle" :class="{'is-muted': isMuted}" @click="setMtuted">Mute</button>
-          <input v-model="range" @change="setVolume" type="range" min="0" max="1" step=0.1 value="0.5">
-        </div>
-      </div>
-      <div class="playlist">
-        <ol class="tracks-list">
-          <li class="track" v-for="paly in playingLists" :class="{'is-current is-playing': currentIndex == $index && isPlay}">
-            <span class="track-status track-cell"></span>
-            <span class="track-details track-cell" @click="playHistoryList(paly.id, $index)">
-            <span class="track-title">{{ paly.title }}</span>
-            <span class="track-artist">{{ paly.artists }}</span>
-            </span>
-            <span class="track-actions track-cell"></span>
-            <span @click="removeList($index)" class="track-length track-cell">X</span>
-          </li>
-        </ol>
-      </div>
     </div>
-  </div>
-  <div class="site-current-track-details">
-    <span class="title">{{ playingTitle }}</span> -
-    <span class="artist">{{ playingArtist }}</span>
-    <div class="times">
-      <span class="current-time">{{ showCurrentTime }}</span> /
-      <span class="duration">{{ showDurationTime }}</span>
-    </div>
-  </div>
-  <button class="site-play-pause-button" :class="[ isPlay ? 'pause' : 'play']" @click="setPlay">Pause</button>
-  <script src="dist/app.js"></script>
+    <button class="site-play-pause-button" :class="[ isPlay ? 'pause' : 'play']" @click="setPlay">Pause</button>
+    <script src="dist/app.js"></script>
 </body>
 
 </html>
