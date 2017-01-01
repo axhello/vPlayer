@@ -5,11 +5,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="keywords" content="vuejs,播放器,网易云api"/>
+    <meta name="keywords" content="vuejs,播放器,网易云api" />
     <meta name="description" content="用vuejs+网易云api写的一款在线播放器">
     <meta name="author" content="vPlayer">
     <title>vPlayer</title>
-    <link rel="stylesheet" type="text/css" href="assets/css/vplayer.css">
+    <link rel="stylesheet" type="text/css" href="dist/css/vplayer.min.css">
 </head>
 
 <body class="home page page-template-landing" :class="{'site-player-is-open':listOpen}">
@@ -31,22 +31,15 @@
                                 <h1 class="entry-title">New Song!</h1>
                             </div>
                             <div class="entry-content">
-                                <p class="content">Enjoy the song from the NetEaseCloud!</p>
+                                <p class="content">Enjoy music from NetEaseCloud!</p>
                                 <p class="btn" :class="{'expand': goSearch}">
-                                  <a class="button" href="#" @click="gotoSearch">Let's Go</a>
+                                    <a class="button" href="#" @click="gotoSearch">Let's Go</a>
                                 </p>
                             </div>
                             <div class="form-table" :class="{'insearch': goSearch}">
                                 <form action="" @submit.prevent>
                                     <div class="input-group">
-                                        <input type="text" 
-                                        @keyup.enter="formSubmit"
-                                        @blur="formSubmit"
-                                        class="form-control" 
-                                        name="search" 
-                                        placeholder="试试输入“Tobu”"
-                                        autocomplete="off" 
-                                        v-model="search">
+                                        <input type="text" @keyup.enter="formSubmit" @blur="formSubmit" class="form-control" name="search" placeholder="试试输入“Tobu”" autocomplete="off" v-model="search">
                                     </div>
                                 </form>
                             </div>
@@ -65,8 +58,10 @@
                                     <tr v-for="list in songLists" @click="playMusic(list.id)">
                                         <td><i class="is-playable"></i></td>
                                         <td>{{ list.name }}</td>
-                                        <td>{{list.ar[0].name}}{{'/'+list.ar[1].name}}{{'/'+list.ar[2].name}}</td>
-                                        <td>《{{ list.al.name }}》</td>
+                                        <td>
+                                        <a>{{list.ar[0].name}}</a><a v-if="list.ar.length == 2">/{{list.ar[1].name}}</a><a v-if="list.ar.length == 3">/{{list.ar[2].name}}</a><a v-if="list.ar.length == 4">/{{list.ar[3].name}}</a>
+                                        </td>
+                                        <td>{{ '《' +list.al.name+ '》'}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -102,7 +97,7 @@
                 </div>
                 <div class="volume-panel">
                     <button class="volume-toggle" :class="{'is-muted': isMuted}" @click="setMtuted">Mute</button>
-                    <input v-model="range" @change="setVolume" type="range" min="0" max="1" step=0.1 value="0.5">
+                    <input v-model="range" @change="setVolume" type="range" min="0" max="1" step="0.1" value="0.5">
                 </div>
             </div>
             <div class="playlist">
@@ -129,7 +124,7 @@
         </div>
     </div>
     <button class="site-play-pause-button" :class="[ isPlay ? 'pause' : 'play']" @click="setPlay">Pause</button>
-    <script src="dist/app.js"></script>
+    <script src="dist/js/app.min.js"></script>
 </body>
 
 </html>

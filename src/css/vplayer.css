@@ -10,7 +10,7 @@ html {
 
 @font-face {
     font-family: "themicons";
-    src: url("../fonts/themicons.woff2") format("woff2"), url("../fonts/themicons.woff") format("woff"), url("../fonts/themicons.ttf") format("truetype");
+    src: url("../fonts/themicons.eot") format("eot"), url("../fonts/themicons.woff") format("woff"), url("../fonts/themicons.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
 }
@@ -243,43 +243,6 @@ td,
 th {
     padding: 0;
 }
-
-
-/**
- * Icons
- * -----------------------------------------------------------------------------
- */
-
-.icon:before,
-.mejs-button button:before,
-.sub-menu-toggle:before,
-.site-navigation-toggle:before,
-.social-navigation a:before,
-.social-navigation-toggle:before,
-.bypostauthor > article .fn:after,
-.breadcrumbs a:first-child:before,
-.dropdown-group:after,
-.nav-next a:after,
-.nav-previous a:before,
-.post-edit-link:before,
-.record-tracklist .is-playable:before,
-.record-tracklist .is-playable:hover:before,
-.record-tracklist .is-playing:before,
-.term-group:before {
-    display: inline-block;
-    font-family: "themicons";
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    font-style: normal;
-    font-variant: normal;
-    font-weight: normal;
-    letter-spacing: normal;
-    text-decoration: inherit;
-    text-transform: none;
-    vertical-align: top;
-    speak: none;
-}
-
 
 /**
  * Typography
