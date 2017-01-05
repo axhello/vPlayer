@@ -59,7 +59,10 @@
                                         <td><i class="is-playable"></i></td>
                                         <td>{{ list.name }}</td>
                                         <td>
-                                        <a>{{list.ar[0].name}}</a><a v-if="list.ar.length == 2">/{{list.ar[1].name}}</a><a v-if="list.ar.length == 3">/{{list.ar[2].name}}</a><a v-if="list.ar.length == 4">/{{list.ar[3].name}}</a>
+                                            <a v-if="list.ar.length >= 1">{{list.ar[0].name}}</a>
+                                            <a v-if="list.ar.length >= 2">/ {{list.ar[1].name}}</a>
+                                            <a v-if="list.ar.length >= 3">/ {{list.ar[2].name}}</a>
+                                            <a v-if="list.ar.length >= 4">/ {{list.ar[3].name}}</a>
                                         </td>
                                         <td>{{ '《' +list.al.name+ '》'}}</td>
                                     </tr>
