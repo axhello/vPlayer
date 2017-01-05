@@ -31,5 +31,5 @@ gulp.task('fontmin', function () {
 //gulp watch
 gulp.task('watch', function () {  
    gulp.watch('src/css/*.css', ['minifycss']);  
-   gulp.watch('src/js/vplayer.js', ['scripts']);  
+   gulp.watch('src/js/*.js', ['scripts']);  
 });
