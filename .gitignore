@@ -1,2 +1,16 @@
+#Mac
 .DS_Store
+#Vscode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+#nodejs
 node_modules
+npm-debug.log
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+# Folder config file
+Desktop.ini
