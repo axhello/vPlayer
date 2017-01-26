@@ -12,9 +12,9 @@ gulp.task('minifycss', function() {
         .pipe(minifycss()) //执行压缩
         .pipe(gulp.dest('dist/css')); //输出文件夹
 });
-//压缩js
+//压缩js  
 gulp.task('scripts', function() {
-    return gulp.src(['src/js/vue.js', 'src/js/vue-resource.min.js', 'src/js/vplayer.js'])
+    return gulp.src(['src/js/vue.min.js', 'src/js/vue-resource.min.js', 'src/js/vplayer.js'])
         .pipe(concat('app.js'))
         .pipe(rename({ suffix: '.min' }))
         .pipe(uglify())

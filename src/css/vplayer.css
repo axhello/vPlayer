@@ -8,6 +8,11 @@ html {
     -ms-text-size-adjust: 100%;
 }
 
+#app {
+    width: 100%;
+    height: 100%;
+}
+
 @font-face {
     font-family: "themicons";
     src: url("../fonts/themicons.eot") format("eot"), url("../fonts/themicons.woff") format("woff"), url("../fonts/themicons.ttf") format("truetype");
@@ -1350,14 +1355,6 @@ textarea {
     color: #9c9c9c;
 }
 
-.site-player .controls button:focus {
-    color: #fff;
-}
-
-.hover .site-player .controls button:hover {
-    color: #fff;
-}
-
 .site-player button {
     cursor: pointer;
     display: block;
@@ -1506,17 +1503,18 @@ textarea {
     right: 0;
     bottom: 0;
     width: 165px;
-}
-
-.site-player .volume-panel:hover button {
     color: #fff;
 }
 
-.hover .site-player .volume-panel:hover .volume-toggle {
+.site-player .volume-panel button {
     color: #fff;
 }
 
-.hover .site-player .volume-panel:hover .volume-slider {
+.site-player .volume-panel:hover .volume-toggle {
+    color: #fff;
+}
+
+.site-player .volume-panel:hover .volume-slider {
     display: block;
 }
 
@@ -2247,6 +2245,7 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 
 .expand {
     opacity: 0;
+    visibility: hidden;
     margin-top: -8em;
     transition: all .3s ease-out;
 }
@@ -2265,6 +2264,7 @@ ul li {
 }
 
 #lyricWrapper {
+    display: block;
     height: 350px;
     overflow: hidden;
     position: relative;
@@ -2274,21 +2274,22 @@ ul li {
 
 #lyricContainer {
     position: relative;
-    top: 99px;
+    top: 100px;
+    width: 100%;
     font-family: "Microsoft YaHei", Helvetica, Arial, sans-serif;
     text-shadow: 1px 0 0 #000, -1px 0 0 #000, 0 1px 0 #000, 0 -1px 0 #000;
 }
 
 #lyricContainer p {
     margin: 1.1em auto;
+    width: 100%;
     font-size: 16px;
     color: #5a5a5a;
-    word-wrap: break-word;
     text-align: center;
-    -webkit-transition: color 0.7s linear;
-    -moz-transition: color 0.7s linear;
-    -o-transition: color 0.7s linear;
-    transition: color 0.7s linear;
+    -webkit-transition: color .5s linear;
+    -moz-transition: color .5s linear;
+    -o-transition: color .5s linear;
+    transition: color .5s linear;
 }
 
 #lyricContainer .current-line {

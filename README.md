@@ -6,6 +6,6 @@ Demo: http://player.ciyuanai.net
 
 已更新使用网易云新版API，国外ip使用会被屏蔽，请注意！
 
-演示站点环境：Vuejs v1.0.28 + vue-resource v0.7.3 + php7 + nginx
+演示站点环境：Vuejs v2.1.10 + vue-resource v1.0.3 + php7 + nginx
 
 因为api那边用的是网易云新版v2 api，所以推荐使用php5.6以上版本，并开启openssl模块
