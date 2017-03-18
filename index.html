@@ -34,7 +34,7 @@
                 <div class="entry-content">
                   <p class="content">Enjoy music from NetEaseCloud!</p>
                   <p class="btn" :class="{'expand': goSearch}">
-                    <a class="button" href="#" @click="gotoSearch">Let's Go</a>
+                    <a class="button" href="#" @click="goSearch">Let's Go</a>
                   </p>
                 </div>
                 <div class="form-table" :class="{'insearch': goSearch}">
@@ -62,10 +62,11 @@
                       </td>
                       <td>{{ list.name }}</td>
                       <td>
-                        <a v-if="list.ar.length >= 1">{{list.ar[0].name}}</a>
-                        <a v-if="list.ar.length >= 2">/ {{list.ar[1].name}}</a>
-                        <a v-if="list.ar.length >= 3">/ {{list.ar[2].name}}</a>
-                        <a v-if="list.ar.length >= 4">/ {{list.ar[3].name}}</a>
+                        <span v-if="list.ar.length >= 1">{{list.ar[0].name}}</span>
+                        <span v-if="list.ar.length >= 2">/ {{list.ar[1].name}}</span>
+                        <span v-if="list.ar.length >= 3">/ {{list.ar[2].name}}</span>
+                        <span v-if="list.ar.length >= 4">/ {{list.ar[3].name}}</span>
+                        <span v-if="list.ar.length >= 5">/ {{list.ar[4].name}}</span>
                       </td>
                       <td>{{ '《' +list.al.name+ '》'}}</td>
                     </tr>
@@ -94,7 +95,7 @@
           <button class="previous" @click="prevPlay" title="上一首">上一首</button>
           <button class="play-pause" @click="setPlay(playingId)" :class="[ isPlay ? 'pause' : 'play']" title="播放/暂停">播放/暂停</button>
           <button class="next" @click="nextPlay" title="下一首">下一首</button>
-          <button class="repeat" :class="{'is-active':isActive}" title="单曲循环" @click="setLoop">单曲循环</button>
+          <button class="repeat" :class="{'is-active': isActive}" title="单曲循环" @click="setLoop">单曲循环</button>
           <button class="shuffle" title="随机播放" @click="setRandom">随机播放</button>
           <div class="progress-bar" @click="clickProgress">
             <div class="play-bar" :style="{ width: progress+'%'}"></div>
@@ -105,14 +106,13 @@
             <span class="duration">{{ showDurationTime }}</span>
           </div>
           <div class="volume-panel">
-            <button class="volume-toggle" :class="{'is-muted': isMuted}" @click="setMtuted" title="静音">静音</button>
+            <button class="volume-toggle" :class="{'is-muted': isMuted}" @click="setMuted" title="静音">静音</button>
             <input v-model="range" @change="setVolume" type="range" min="0" max="1" step="0.1" :value="range">
           </div>
         </div>
         <div class="playlist">
           <ol class="tracks-list">
-            <li class="track" v-for="(paly, index) in playingLists" 
-            :class="{'is-current is-playing': currentIndex == index && isPlay}">
+            <li class="track" v-for="(paly, index) in playingLists" :class="{'is-current is-playing': currentIndex == index && isPlay}">
               <span class="track-status track-cell"></span>
               <span class="track-details track-cell" @click="playHistoryList(paly.id, index)">
                 <span class="track-title">{{ paly.title }}</span>
